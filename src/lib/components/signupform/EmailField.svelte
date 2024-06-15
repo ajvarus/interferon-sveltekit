@@ -1,0 +1,55 @@
+<script lang="ts">
+  import { type Writable, writable } from "svelte/store";
+
+  import { Label } from "$lib/components/ui/label/index.js";
+  import { Input } from "$lib/components/ui/input/index.js";
+
+  import Check from "lucide-svelte/icons/check";
+
+  import { SignUpManager as sm } from "./SignUpManager";
+  import { email, isValidEmail, emailExists } from "./stores";
+
+  let isValid: null | boolean = $state(null);
+  let errorMsg = $state("");
+
+  let hasBlurred = $state(false);
+
+  async function onBlur() {
+    hasBlurred = true;
+    $isValidEmail = sm.validateEmail($email);
+    console.log($isValidEmail);
+    if (!$isValidEmail) {
+      errorMsg = "Please enter a valid email.";
+    } else {
+      emailExists.set(await sm.checkIfEmailExists($email));
+    }
+  }
+
+  const onFocus = () => {
+    hasBlurred = false;
+    errorMsg = "";
+  };
+</script>
+
+<div class="flex max-w-sm w-full flex-col gap-3">
+  <Label for="email-2">Email</Label>
+  <div class="relative">
+    <Input
+      type="email"
+      id="email-2"
+      placeholder="name@example.com"
+      bind:value={$email}
+      on:blur={onBlur}
+      on:focus={onFocus}
+      class={`border ${$email && hasBlurred && !$isValidEmail ? "border-red-500" : ""}`}
+    />
+    {#if $email && $isValidEmail && !$emailExists}
+      <Check
+        class="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500 w-4 h-4"
+      />
+    {/if}
+  </div>
+  {#if $email && !$isValidEmail && errorMsg}
+    <p class="text-sm text-red-500">{errorMsg}</p>
+  {/if}
+</div>

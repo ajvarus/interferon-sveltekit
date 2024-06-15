@@ -1,7 +1,7 @@
 <script>
-  import InputField from "$lib/components/signupform/InputField.svelte";
+  import SignUpForm from "$lib/components/signupform/SignUpForm.svelte";
 </script>
 
-<div class="flex justify-center items-center h-screen">
-  <InputField />
+<div class="flex flex-col justify-center items-center h-screen gap-2.5">
+  <SignUpForm />
 </div>

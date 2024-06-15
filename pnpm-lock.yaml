@@ -17,6 +17,12 @@ importers:
       lucide-svelte:
         specifier: ^0.394.0
         version: 0.394.0(svelte@5.0.0-next.153)
+      mode-watcher:
+        specifier: ^0.3.0
+        version: 0.3.0(svelte@5.0.0-next.153)
+      svelte-sonner:
+        specifier: ^0.3.24
+        version: 0.3.24(svelte@5.0.0-next.153)
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -764,6 +770,11 @@ packages:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
     hasBin: true
 
+  mode-watcher@0.3.0:
+    resolution: {integrity: sha512-k8jjuTx94HaaRKWO6JDf8wL761hFatrTIHJKl+E+3JWcnv+GnMBH062zcLsy0lbCI3n7RZxxHaWi66auFnUO4g==}
+    peerDependencies:
+      svelte: ^4.0.0
+
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -1038,6 +1049,11 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  svelte-sonner@0.3.24:
+    resolution: {integrity: sha512-txuL0JBUs0v6qGrr0PGCsbXmKHuthdrAkfISYi8umuveF7+gINb6EXl6VmKY9aHhyxCqvVgqd6yophQNrnor4w==}
+    peerDependencies:
+      svelte: '>=3 <5'
 
   svelte@5.0.0-next.153:
     resolution: {integrity: sha512-ZbRnvO0UWXhE71Va5Rjg+nY4tbCUnqJFQC0VXHdqkHT/i5nqW8DPtw0rBlsFg4mq2uDQ8iOO/P7tR3OVXaSI7g==}
@@ -1763,6 +1779,10 @@ snapshots:
     dependencies:
       minimist: 1.2.8
 
+  mode-watcher@0.3.0(svelte@5.0.0-next.153):
+    dependencies:
+      svelte: 5.0.0-next.153
+
   mri@1.2.0: {}
 
   mrmime@2.0.0: {}
@@ -2020,6 +2040,10 @@ snapshots:
       postcss: 8.4.38
       postcss-load-config: 4.0.2(postcss@8.4.38)
       typescript: 5.4.5
+
+  svelte-sonner@0.3.24(svelte@5.0.0-next.153):
+    dependencies:
+      svelte: 5.0.0-next.153
 
   svelte@5.0.0-next.153:
     dependencies:
