@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { derived } from "svelte/store";
+
   import { Button } from "$lib/components/ui/button/index.js";
   import { toast } from "svelte-sonner";
 
@@ -16,7 +18,7 @@
     authResponse,
   } from "./stores";
 
-  import { SignUpManager as sm } from "./SignUpManager";
+  import { Validator as v } from "./validator";
 
   const ButtonStates = {
     NEUTRAL: "neutral",
@@ -35,20 +37,23 @@
 
   function onSumitButtonClick() {
     console.log("submit button clicked");
-    $isSubmittable = sm.validateForm(
+    let canBeSubmitted: boolean | undefined;
+    canBeSubmitted = v.validateForm(
       $isValidEmail,
       $isPasswordValid,
       $isConfirmPasswordValid,
       $emailExists
     );
-
-    if ($isSubmittable) {
+    if (canBeSubmitted) {
       currentState = ButtonStates.LOADING;
+      $isSubmittable = canBeSubmitted;
+      canBeSubmitted = undefined;
     } else {
       currentState = ButtonStates.ERROR;
       toast.error("Sign-up failed.", {
         description: "Please make sure all fields are valid.",
       });
+      canBeSubmitted = undefined;
       resetToNeutralState();
     }
   }
@@ -60,7 +65,7 @@
         description: "You'll be redirected shortly.",
       });
       resetToNeutralState();
-    } else {
+    } else if ("status_code" in response) {
       currentState = ButtonStates.ERROR;
       toast.error("Sign-up failed.", {
         description: response.msg ? response.msg : "Something went wrong.",
@@ -78,11 +83,11 @@
 >
   {#if currentState === ButtonStates.LOADING}
     <LoaderCircle class="animate-spin" />
-  {:else if currentState === ButtonStates.NEUTRAL}
-    <ArrowRight />
+  {:else if currentState === ButtonStates.ERROR}
+    <X color="red" />
   {:else if currentState === ButtonStates.SUCCESS}
-    <Check />
+    <Check color="green" />
   {:else}
-    <X />
+    <ArrowRight />
   {/if}
 </Button>

@@ -15,7 +15,7 @@
     isConfirmPasswordValid,
   } from "./stores";
 
-  import { SignUpManager as sm } from "./SignUpManager";
+  import { Validator as v } from "./validator";
 
   let confirmPassword = $state("");
   let isPasswordVisible = $state(false);
@@ -23,16 +23,20 @@
   let errorMsgConfirmPassword = $state("");
 
   function onPasswordInput() {
-    $isPasswordValid = sm.validatePassword($password);
-    if ($isPasswordValid) {
-      warningMsgPassword = "";
-    } else {
-      warningMsgPassword = "Password is weak.";
-    }
+    const validationResult = v.validatePassword($password);
+    $isPasswordValid = validationResult.isValid;
+    warningMsgPassword = validationResult.isValid
+      ? ""
+      : String(validationResult.error);
+    // if ($isPasswordValid) {
+    //   warningMsgPassword = "";
+    // } else {
+    //   warningMsgPassword = "Password is weak.";
+    // }
   }
 
   function onConfirmPasswordBlur() {
-    $isConfirmPasswordValid = sm.matchPasswords($password, confirmPassword);
+    $isConfirmPasswordValid = v.matchPasswords($password, confirmPassword);
     if ($isConfirmPasswordValid) {
       errorMsgConfirmPassword = "";
     } else {
@@ -54,7 +58,7 @@
         id="password"
         name="password"
         type={isPasswordVisible ? "text" : "password"}
-        placeholder="abc@1234"
+        placeholder="Abc@1234"
         bind:value={$password}
         on:input={onPasswordInput}
         class={`border ${$password.length > 0 && !$isPasswordValid ? "border-red-500" : "border-gray-300"}`}
@@ -84,7 +88,7 @@
         id="confirm-password"
         name="confirmPassword"
         type="password"
-        placeholder="abc@1234"
+        placeholder="Abc@1234"
         bind:value={confirmPassword}
         on:blur={onConfirmPasswordBlur}
         class="border border-gray-300"

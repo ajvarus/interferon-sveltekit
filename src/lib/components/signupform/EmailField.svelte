@@ -4,7 +4,7 @@
 
   import Check from "lucide-svelte/icons/check";
 
-  import { SignUpManager as sm } from "./SignUpManager";
+  import { Validator as v } from "./validator";
   import { email, isValidEmail, emailExists } from "./stores";
 
   let errorMsg = $state("");
@@ -13,12 +13,11 @@
 
   async function onBlur() {
     hasBlurred = true;
-    $isValidEmail = sm.validateEmail($email);
-    console.log($isValidEmail);
-    if (!$isValidEmail) {
-      errorMsg = "Please enter a valid email.";
-    } else {
-      emailExists.set(await sm.checkIfEmailExists($email));
+    let result = v.validateEmail($email);
+    $isValidEmail = result.isValid;
+    errorMsg = result.isValid ? "" : String(result.error);
+    if ($isValidEmail) {
+      emailExists.set(await v.checkIfEmailExists($email));
     }
   }
 
