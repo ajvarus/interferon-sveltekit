@@ -36,4 +36,6 @@ export class SignUpManager {
       (!emailExists ? isConfirmPasswordValid : true)
     );
   }
+
+  static async submitForm(email: string, password: string) {}
 }

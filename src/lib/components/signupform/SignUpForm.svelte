@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import * as Card from "$lib/components/ui/card";
 
   import EmailField from "$lib/components/signupform/EmailField.svelte";
@@ -14,7 +14,7 @@
     >
   </Card.Header>
   <Card.Content>
-    <div class="flex flex-col items-center gap-3">
+    <div id="signupform" class="flex flex-col items-center gap-3">
       <EmailField />
       <PasswordField />
       <SubmitButton />

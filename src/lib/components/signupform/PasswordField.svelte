@@ -8,6 +8,7 @@
 
   import {
     email,
+    password,
     isValidEmail,
     emailExists,
     isPasswordValid,
@@ -16,14 +17,13 @@
 
   import { SignUpManager as sm } from "./SignUpManager";
 
-  let password = $state("");
   let confirmPassword = $state("");
   let isPasswordVisible = $state(false);
   let warningMsgPassword = $state("");
   let errorMsgConfirmPassword = $state("");
 
   function onPasswordInput() {
-    $isPasswordValid = sm.validatePassword(password);
+    $isPasswordValid = sm.validatePassword($password);
     if ($isPasswordValid) {
       warningMsgPassword = "";
     } else {
@@ -32,7 +32,7 @@
   }
 
   function onConfirmPasswordBlur() {
-    $isConfirmPasswordValid = sm.matchPasswords(password, confirmPassword);
+    $isConfirmPasswordValid = sm.matchPasswords($password, confirmPassword);
     if ($isConfirmPasswordValid) {
       errorMsgConfirmPassword = "";
     } else {
@@ -52,18 +52,19 @@
     <div class="relative">
       <Input
         id="password"
+        name="password"
         type={isPasswordVisible ? "text" : "password"}
         placeholder="abc@1234"
-        bind:value={password}
+        bind:value={$password}
         on:input={onPasswordInput}
-        class={`border ${password.length > 0 && !$isPasswordValid ? "border-red-500" : "border-gray-300"}`}
+        class={`border ${$password.length > 0 && !$isPasswordValid ? "border-red-500" : "border-gray-300"}`}
       />
       <Button
         variant="ghost"
         size="icon"
         class="absolute right-0.5 top-1/2 transform -translate-y-1/2 cursor-pointer"
         on:click={onEyeButtonClick}
-        disabled={password.length === 0}
+        disabled={$password.length === 0}
       >
         {#if isPasswordVisible}
           <EyeOffIcon class="w-4 h-4" />
@@ -81,6 +82,7 @@
       <Label for="confirm-password">Confirm password</Label>
       <Input
         id="confirm-password"
+        name="confirmPassword"
         type="password"
         placeholder="abc@1234"
         bind:value={confirmPassword}

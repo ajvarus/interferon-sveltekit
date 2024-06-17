@@ -1,0 +1,13 @@
+// src/lib/types.ts
+
+export interface AuthRequest {
+  auth_type: string;
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  status_code?: number;
+  msg?: string;
+}

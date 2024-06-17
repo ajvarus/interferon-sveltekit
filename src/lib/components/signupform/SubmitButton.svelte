@@ -13,6 +13,7 @@
     isConfirmPasswordValid,
     emailExists,
     isSubmittable,
+    authResponse,
   } from "./stores";
 
   import { SignUpManager as sm } from "./SignUpManager";
@@ -33,6 +34,7 @@
   }
 
   function onSumitButtonClick() {
+    console.log("submit button clicked");
     $isSubmittable = sm.validateForm(
       $isValidEmail,
       $isPasswordValid,
@@ -50,9 +52,30 @@
       resetToNeutralState();
     }
   }
+
+  authResponse.subscribe((response) => {
+    if (response.success) {
+      currentState = ButtonStates.SUCCESS;
+      toast.success("Sign-up successful.", {
+        description: "You'll be redirected shortly.",
+      });
+      resetToNeutralState();
+    } else {
+      currentState = ButtonStates.ERROR;
+      toast.error("Sign-up failed.", {
+        description: response.msg ? response.msg : "Something went wrong.",
+      });
+      resetToNeutralState();
+    }
+  });
 </script>
 
-<Button size="icon" on:click={onSumitButtonClick} class="rounded-full">
+<Button
+  size="icon"
+  on:click={onSumitButtonClick}
+  class="rounded-full"
+  type="submit"
+>
   {#if currentState === ButtonStates.LOADING}
     <LoaderCircle class="animate-spin" />
   {:else if currentState === ButtonStates.NEUTRAL}

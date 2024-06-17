@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { type Writable, writable } from "svelte/store";
-
   import { Label } from "$lib/components/ui/label/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
 
@@ -9,7 +7,6 @@
   import { SignUpManager as sm } from "./SignUpManager";
   import { email, isValidEmail, emailExists } from "./stores";
 
-  let isValid: null | boolean = $state(null);
   let errorMsg = $state("");
 
   let hasBlurred = $state(false);
@@ -38,6 +35,7 @@
       type="email"
       id="email-2"
       placeholder="name@example.com"
+      name="email"
       bind:value={$email}
       on:blur={onBlur}
       on:focus={onFocus}
