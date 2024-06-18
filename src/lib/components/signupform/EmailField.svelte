@@ -32,6 +32,7 @@
   <div class="relative">
     <Input
       type="email"
+      form="signupform"
       id="email-2"
       placeholder="name@example.com"
       name="email"

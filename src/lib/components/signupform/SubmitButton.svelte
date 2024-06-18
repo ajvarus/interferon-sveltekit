@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { derived } from "svelte/store";
-
   import { Button } from "$lib/components/ui/button/index.js";
   import { toast } from "svelte-sonner";
 
@@ -80,6 +78,7 @@
   on:click={onSumitButtonClick}
   class="rounded-full"
   type="submit"
+  form="signupform"
 >
   {#if currentState === ButtonStates.LOADING}
     <LoaderCircle class="animate-spin" />

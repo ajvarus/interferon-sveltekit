@@ -56,6 +56,7 @@
     <div class="relative">
       <Input
         id="password"
+        form="signupform"
         name="password"
         type={isPasswordVisible ? "text" : "password"}
         placeholder="Abc@1234"

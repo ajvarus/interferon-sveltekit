@@ -1,5 +1,10 @@
 // src/lib/types.ts
 
+export interface Credentials {
+  email: string;
+  password: string;
+}
+
 export interface AuthRequest {
   auth_type: string;
   email: string;

@@ -14,6 +14,7 @@
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@tailwindcss/typography": "^0.5.13",
+    "@types/cookie": "^0.6.0",
     "@vavite/node-loader": "^4.1.1",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
@@ -30,6 +31,8 @@
   "dependencies": {
     "bits-ui": "^0.21.10",
     "clsx": "^2.1.1",
+    "cookie": "^0.6.0",
+    "ioredis": "^5.4.1",
     "lucide-svelte": "^0.394.0",
     "mode-watcher": "^0.3.0",
     "svelte-sonner": "^0.3.24",
