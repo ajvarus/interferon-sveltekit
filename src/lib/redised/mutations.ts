@@ -4,4 +4,8 @@ async function setToken(sessionId: string, token: string) {
   await r.set(sessionId, token);
 }
 
-export { setToken };
+async function deleteToken(sessionId: string) {
+  await r.del(sessionId);
+}
+
+export { setToken, deleteToken };
