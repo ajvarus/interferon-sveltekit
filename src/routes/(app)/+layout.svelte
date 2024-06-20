@@ -2,9 +2,6 @@
 
 <script lang="ts">
   import Frame from "$lib/components/frame/Frame.svelte";
-  import { toast } from "svelte-sonner";
-
-  import type { LayoutServerData } from "./$types";
   import type { AuthResponse } from "$lib/types";
 
   import { goto } from "$app/navigation";
@@ -25,17 +22,17 @@
   //   }
   // });
 
-  import type { SubmitFunction } from "@sveltejs/kit";
-  function submitForm(): SubmitFunction | any {
-    return async ({ result, update }: { result: any; update: any }) => {
-      console.log(result.type, result.data);
-      const response: AuthResponse = result.data;
-      if (response.success) {
-        setTimeout(async () => await goto("/"), 3000);
-      }
-      await update({ reset: false });
-    };
-  }
+  // import type { SubmitFunction } from "@sveltejs/kit";
+  // function submitForm(): SubmitFunction | any {
+  //   return async ({ result, update }: { result: any; update: any }) => {
+  //     console.log(result.type, result.data);
+  //     const response: AuthResponse = result.data;
+  //     if (response.success) {
+  //       setTimeout(async () => await goto("/"), 3000);
+  //     }
+  //     await update({ reset: false });
+  //   };
+  // }
 </script>
 
 <Frame />

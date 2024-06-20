@@ -1,5 +1,7 @@
 // src/routes/auth/logout/+server.ts
 
+import { INTF_AUTH_ENDPOINT } from "$env/static/private";
+
 import type { RequestHandler } from "./$types";
 
 import type { AuthResponse } from "$lib/types";
@@ -7,15 +9,13 @@ import type { AuthResponse } from "$lib/types";
 import { makeAuthroizedRequestTo } from "$lib/intf/requests";
 import { deleteToken } from "$lib/redised/mutations";
 
-export const GET: RequestHandler = async ({ locals, cookies, request }) => {
+export const GET: RequestHandler = async ({ locals, cookies }) => {
   console.log("Hi from logout server");
-  console.log(request.redirect);
   let authResponse: AuthResponse = { success: false };
   const response = await makeAuthroizedRequestTo(
-    "/logout",
+    `${INTF_AUTH_ENDPOINT}/signout`,
     "POST",
-    String(locals.token),
-    {}
+    String(locals.token)
   );
   if (response.ok) {
     const session = await response.json();
@@ -27,6 +27,7 @@ export const GET: RequestHandler = async ({ locals, cookies, request }) => {
       path: "/",
     });
     await deleteToken(session.session_id);
+    console.log("Logout successful");
   }
   return new Response(JSON.stringify(authResponse));
 };

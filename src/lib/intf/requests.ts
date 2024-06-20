@@ -14,9 +14,6 @@ async function makeRequestTo(
     },
     body: JSON.stringify({ ...body }),
   });
-
-  console.log("Hi from intf request maker.");
-  console.log(await response.json());
   return response;
 }
 
@@ -24,9 +21,9 @@ async function makeAuthroizedRequestTo(
   intfEndpoint: string,
   method: string,
   token: string,
-  body: Object
-): Promise<any> {
-  const response = await fetch(`${INTF_BASE_URL}${intfEndpoint}`, {
+  body?: Object
+): Promise<Response> {
+  const response = fetch(`${INTF_BASE_URL}${intfEndpoint}`, {
     method: method,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -34,6 +31,7 @@ async function makeAuthroizedRequestTo(
     },
     body: JSON.stringify({ ...body }),
   });
+  console.log("Hi from intf request maker.");
   return response;
 }
 

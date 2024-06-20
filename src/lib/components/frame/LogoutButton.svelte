@@ -2,18 +2,52 @@
 
 <script lang="ts">
   import * as AlertDialog from "$lib/components/ui/alert-dialog";
-  import MenubarButton from "./MenubarButton.svelte";
   import { Button } from "$lib/components/ui/button/index";
+  import { toast } from "svelte-sonner";
+  import type { AuthResponse } from "$lib/types";
 
   import CirclePower from "lucide-svelte/icons/circle-power";
+
+  import { goto } from "$app/navigation";
+
+  async function logout() {
+    isLoading = true;
+    const response = await fetch("/auth/logout", {
+      method: "GET",
+    });
+    const res: AuthResponse = await response.json();
+    if (res.success) {
+      isOpen = false;
+      toast.success("Logout successful.", {
+        description: "You are being redirected",
+      });
+      setTimeout(async () => await goto("/"), 1000);
+    } else {
+      isOpen = false;
+      toast.error("Logout failed.", {
+        description: "Please try again.",
+      });
+    }
+    isLoading = false;
+  }
+
+  let isOpen = $state(false);
+  let isLoading = $state(false);
 </script>
 
-<AlertDialog.Root>
-  <AlertDialog.Trigger
-    ><MenubarButton name="Logout">
+<AlertDialog.Root bind:open={isOpen} closeOnOutsideClick={true}>
+  <AlertDialog.Trigger asChild let:builder
+    ><Button
+      variant="ghost"
+      size="icon"
+      class="rounded-lg"
+      aria-label="Playground"
+      builders={[builder]}
+      on:click={() => (isOpen = true)}
+    >
       <CirclePower class="size-7" />
-    </MenubarButton></AlertDialog.Trigger
-  >
+    </Button>
+  </AlertDialog.Trigger>
   <AlertDialog.Content>
     <AlertDialog.Header>
       <AlertDialog.Title>Are you sure?</AlertDialog.Title>
@@ -23,19 +57,11 @@
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <form action="/auth/logout" name="logout">
-        <Button
-          type="submit"
-          form="logout"
-          on:click={async () => {
-            const response = await fetch("/auth/logout", {
-              method: "GET",
-            });
-            console.log("Logout button clicked", await response.json());
-          }}>Logout</Button
-        >
-      </form>
-      <!--<AlertDialog.Action on:click={logout}>Logout</AlertDialog.Action>-->
+      <Button
+        on:click={logout}
+        class={isLoading ? "animate-bounce" : ""}
+        disabled={isLoading}>Logout</Button
+      >
     </AlertDialog.Footer>
   </AlertDialog.Content>
 </AlertDialog.Root>
