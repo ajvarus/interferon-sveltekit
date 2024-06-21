@@ -1,0 +1,8 @@
+overwrite: true
+schema: "src/lib/graphiq/schema.graphql"
+documents: "src/lib/graphiq/**/*.ts"
+generates:
+  src/lib/graphiq/generated.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"

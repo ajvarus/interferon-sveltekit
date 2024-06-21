@@ -1,0 +1,11 @@
+# src/lib/graphiq/schema.graphql
+
+type Password {
+  id: ID!
+  passwordName: String!
+  decryptedPassword: String!
+}
+
+type Query {
+  getPasswords: [Password!]!
+}
