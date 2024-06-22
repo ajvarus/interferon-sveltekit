@@ -15,6 +15,8 @@ export const load: PageServerLoad = async ({ locals }) => {
       .query<GetPasswordsQuery>(GET_PASSWORDS_QUERY, {})
       .toPromise();
 
+    console.log(result.data?.getPasswords);
+
     return {
       passwords: result.data?.getPasswords || [],
     };
