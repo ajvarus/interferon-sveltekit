@@ -3,12 +3,14 @@
 <script lang="ts">
   import type { PageData } from "./$types";
 
+  import AddPasswordsSheet from "$lib/components/vault/AddPasswordsSheet.svelte";
+
   let { data } = $props<{ data: PageData }>();
   console.log("data", data.passwords);
 </script>
 
 <div class="flex flex-col justify-center items-center h-screen gap-2.5">
-  <h1>Passwords</h1>
+  <AddPasswordsSheet />
   {#if data.passwords && data.passwords.length === 0}
     <p>No passwords found.</p>
   {:else}
