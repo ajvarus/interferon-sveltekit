@@ -1,0 +1,15 @@
+overwrite: true
+schema: "src/lib/graphiq/schema.graphql"
+documents: "src/lib/graphiq/**/*.graphql"
+generates:
+  src/lib/graphiq/generated.sdk.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-generic-sdk"
+    config:
+      rawRequest: false
+      inlineFragmentTypes: "combine"
+      avoidOptionals: true
+      dedupeFragments: true
+      skipTypename: true

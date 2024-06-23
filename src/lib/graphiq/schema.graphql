@@ -9,3 +9,12 @@ type Password {
 type Query {
   getPasswords: [Password!]!
 }
+
+type Mutation {
+  storePasswords(passwords: [PasswordInput!]!): [Password!]!
+}
+
+input PasswordInput {
+  passwordName: String!
+  password: String!
+}

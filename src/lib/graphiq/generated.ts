@@ -14,19 +14,38 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Mutation = {
+  storePasswords: Array<Password>;
+};
+
+
+export type MutationStorePasswordsArgs = {
+  passwords: Array<PasswordInput>;
+};
+
 export type Password = {
-  __typename?: 'Password';
   decryptedPassword: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   passwordName: Scalars['String']['output'];
 };
 
+export type PasswordInput = {
+  password: Scalars['String']['input'];
+  passwordName: Scalars['String']['input'];
+};
+
 export type Query = {
-  __typename?: 'Query';
   getPasswords: Array<Password>;
 };
+
+export type StorePasswordsMutationVariables = Exact<{
+  passwords: Array<PasswordInput> | PasswordInput;
+}>;
+
+
+export type StorePasswordsMutation = { storePasswords: Array<{ id: string, passwordName: string }> };
 
 export type GetPasswordsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPasswordsQuery = { __typename?: 'Query', getPasswords: Array<{ __typename?: 'Password', id: string, passwordName: string, decryptedPassword: string }> };
+export type GetPasswordsQuery = { getPasswords: Array<{ id: string, passwordName: string, decryptedPassword: string }> };
