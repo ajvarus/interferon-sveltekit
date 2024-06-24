@@ -19,13 +19,17 @@
     </Button>
   </div>
   <nav class="grid gap-3 p-3">
-    <MenubarButton name="Dashboard">
-      <Home class="size-7" />
-    </MenubarButton>
+    <a href="/dashboard">
+      <MenubarButton name="Dashboard">
+        <Home class="size-7" />
+      </MenubarButton>
+    </a>
     <Separator class="my-0" />
-    <MenubarButton name="Vault">
-      <Vault class="size-7" />
-    </MenubarButton>
+    <a href="/services/vault">
+      <MenubarButton name="Vault">
+        <Vault class="size-7" />
+      </MenubarButton>
+    </a>
   </nav>
   <nav class="mt-auto grid gap-3 p-3">
     <MenubarButton name="Profile">
