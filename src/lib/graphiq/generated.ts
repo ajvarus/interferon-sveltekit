@@ -15,7 +15,13 @@ export type Scalars = {
 };
 
 export type Mutation = {
+  deletePasswords: Array<PasswordResponse>;
   storePasswords: Array<Password>;
+};
+
+
+export type MutationDeletePasswordsArgs = {
+  passwords: Array<PasswordDeleteInput>;
 };
 
 
@@ -29,9 +35,20 @@ export type Password = {
   passwordName: Scalars['String']['output'];
 };
 
+export type PasswordDeleteInput = {
+  id: Scalars['ID']['input'];
+  passwordName: Scalars['String']['input'];
+};
+
 export type PasswordInput = {
   password: Scalars['String']['input'];
   passwordName: Scalars['String']['input'];
+};
+
+export type PasswordResponse = {
+  encryptedPassword: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  passwordName: Scalars['String']['output'];
 };
 
 export type Query = {

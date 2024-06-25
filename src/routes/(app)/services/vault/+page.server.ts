@@ -20,7 +20,6 @@ export const load: PageServerLoad = async ({ locals }) => {
     const result = await client
       .query<GetPasswordsQuery>(GET_PASSWORDS_QUERY, {})
       .toPromise();
-    console.log(result.data?.getPasswords);
     return {
       passwords: result.data?.getPasswords || [],
     };
@@ -33,7 +32,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
   store: async ({ request, locals }) => {
-    console.log("Hi from store action");
     const client = gqlClient(String(locals.token));
 
     let newPasswords: PasswordInput[] = [];

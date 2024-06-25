@@ -6,15 +6,27 @@ type Password {
   decryptedPassword: String!
 }
 
+type PasswordResponse {
+  id: ID!
+  passwordName: String!
+  encryptedPassword: String!
+}
+
 type Query {
   getPasswords: [Password!]!
 }
 
 type Mutation {
   storePasswords(passwords: [PasswordInput!]!): [Password!]!
+  deletePasswords(passwords: [PasswordDeleteInput!]!): [PasswordResponse!]!
 }
 
 input PasswordInput {
   passwordName: String!
   password: String!
+}
+
+input PasswordDeleteInput {
+  id: ID!
+  passwordName: String!
 }

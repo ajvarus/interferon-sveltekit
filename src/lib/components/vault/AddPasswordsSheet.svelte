@@ -9,34 +9,20 @@
 
   import PasswordCard from "./PasswordCard.svelte";
 
-  type PasswordEntry = {
-    name: string;
-    username: string;
-    password: string;
-  };
-
-  let addedPasswords: PasswordEntry[] = $state([
-    { name: "", username: "", password: "" },
-  ]);
-
-  function addPassword() {
-    addedPasswords.unshift({ name: "", username: "", password: "" });
-  }
-
-  function removePassword(index: number) {
-    addedPasswords.splice(index, 1);
-  }
+  import { addPasswordsController as apc } from "./state.svelte";
 </script>
 
-<Sheet.Root>
-  <Sheet.Trigger asChild let:builder>
-    <Button
-      size="icon"
-      builders={[builder]}
-      variant="outline"
-      class="rounded-full"><CirclePlus color="green" /></Button
-    >
-  </Sheet.Trigger>
+<Sheet.Root
+  open={apc.drawerOpen}
+  onOpenChange={() => apc.toggleDrawer()}
+  closeOnOutsideClick={true}
+>
+  <Button
+    size="icon"
+    on:click={() => apc.openDrawer()}
+    variant="outline"
+    class="rounded-full"><CirclePlus color="green" /></Button
+  >
   <Sheet.Content side="right" class="flex flex-col h-[100dvh]">
     <Sheet.Header>
       <Sheet.Title>Add passwords</Sheet.Title>
@@ -48,7 +34,7 @@
         <Button
           size="icon"
           variant="outline"
-          on:click={addPassword}
+          on:click={() => apc.addPassword()}
           class="rounded-full"><CirclePlus color="green" /></Button
         >
         <Button size="icon" variant="outline" class="rounded-full"
@@ -65,10 +51,10 @@
     </Sheet.Header>
     <ScrollArea class="flex-grow min-h-[300px] border p-2 rounded-s">
       <div class="grid gap-4">
-        {#each addedPasswords as password, i (i)}
+        {#each apc.addedPasswords as _, i (i)}
           <PasswordCard
-            bind:password={addedPasswords[i]}
-            {removePassword}
+            bind:password={apc.addedPasswords[i]}
+            removePassword={() => apc.removePassword(i)}
             index={i}
           />
         {/each}
