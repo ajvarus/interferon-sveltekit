@@ -10,6 +10,7 @@ import { GET_PASSWORDS_QUERY } from "$lib/graphiq/queries/passwords";
 
 import type {
   PasswordInput,
+  PasswordDeleteInput,
   StorePasswordsMutation,
 } from "$lib/graphiq/generated.sdk";
 import { StorePasswordsDocument } from "$lib/graphiq/generated.sdk";
@@ -56,6 +57,34 @@ export const actions: Actions = {
     } catch (error) {
       return {
         passwords: [],
+      };
+    }
+  },
+  delete: async ({ request, locals }) => {
+    const client = gqlClient(String(locals.token));
+    const sdk = gqlSdk(client, "mutation");
+    const formData = await request.formData();
+    const deletedPasswords: PasswordDeleteInput[] = [];
+    const index: number = formData.get("index")
+      ? Number(formData.get("index"))
+      : 0;
+
+    console.log(formData);
+    for (let i = index; i == index; i++) {
+      deletedPasswords.push({
+        id: formData.get("index")?.toString() || "",
+        passwordName: formData.get(`passwords[${i}].name`)?.toString() || "",
+      });
+    }
+    console.log("deletedPasswords", deletedPasswords);
+    try {
+      const result = await sdk.DeletePasswords({ passwords: deletedPasswords });
+      return {
+        deletedPasswords: result.deletePasswords || [],
+      };
+    } catch (error) {
+      return {
+        deletedPasswords: [],
       };
     }
   },

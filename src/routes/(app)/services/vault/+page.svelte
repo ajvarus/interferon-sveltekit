@@ -9,20 +9,35 @@
 
   import { toast } from "svelte-sonner";
 
-  import type { Password } from "$lib/components/vault/types.svelte";
+  import type {
+    Password,
+    DeletedPassword,
+  } from "$lib/components/vault/types.svelte";
   import { addPasswordsController as apc } from "$lib/components/vault/state.svelte";
+  import { untrack } from "svelte";
 
   let { data, form }: { data: PageData; form: ActionData } = $props();
   let passwords = $state(data?.passwords || []);
 
   let storePasswordsResponse = $derived(form?.passwords as Password[]);
+  let deletePasswordsResponse = $derived(
+    form?.deletedPasswords as DeletedPassword[]
+  );
   $effect(() => {
     if (storePasswordsResponse) {
-      // WARNING: Below line is buggy
-      passwords = storePasswordsResponse;
+      untrack(() => {
+        passwords.unshift(...storePasswordsResponse);
+      });
       toast.success("Passwords added.");
       apc.closeDrawer();
       apc.resetPasswords();
+    }
+    if (deletePasswordsResponse) {
+      untrack(() => {
+        const idsToDelete = new Set(deletePasswordsResponse.map((p) => p.id));
+        passwords = passwords.filter((p) => !idsToDelete.has(p.id));
+      });
+      toast.success("Passwords deleted.");
     }
   });
 </script>

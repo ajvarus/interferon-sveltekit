@@ -6,9 +6,17 @@ import type { TypedDocumentNode } from "@urql/svelte";
 
 import type { Client } from "@urql/svelte";
 
-function urqlClientToRequester(client: Client): Requester {
+function urqlClientToRequester(
+  client: Client,
+  opType: "query" | "mutation"
+): Requester {
   return async (doc: DocumentNode, variables: any) => {
-    const result = await client.query(doc, variables).toPromise();
+    let result;
+    if (opType === "query") {
+      result = await client.query(doc, variables).toPromise();
+    } else {
+      result = await client.mutation(doc, variables).toPromise();
+    }
     if (result.error) {
       throw result.error;
     }
@@ -16,6 +24,6 @@ function urqlClientToRequester(client: Client): Requester {
   };
 }
 
-export function gqlSdk(client: Client): Sdk {
-  return getSdk(urqlClientToRequester(client));
+export function gqlSdk(client: Client, opType: "query" | "mutation"): Sdk {
+  return getSdk(urqlClientToRequester(client, opType));
 }

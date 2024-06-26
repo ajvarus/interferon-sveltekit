@@ -30,7 +30,12 @@ export type Scalars = {
 };
 
 export type Mutation = {
+  deletePasswords: Array<PasswordResponse>;
   storePasswords: Array<Password>;
+};
+
+export type MutationDeletePasswordsArgs = {
+  passwords: Array<PasswordDeleteInput>;
 };
 
 export type MutationStorePasswordsArgs = {
@@ -43,9 +48,20 @@ export type Password = {
   passwordName: Scalars["String"]["output"];
 };
 
+export type PasswordDeleteInput = {
+  id: Scalars["ID"]["input"];
+  passwordName: Scalars["String"]["input"];
+};
+
 export type PasswordInput = {
   password: Scalars["String"]["input"];
   passwordName: Scalars["String"]["input"];
+};
+
+export type PasswordResponse = {
+  encryptedPassword: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  passwordName: Scalars["String"]["output"];
 };
 
 export type Query = {
@@ -58,6 +74,18 @@ export type StorePasswordsMutationVariables = Exact<{
 
 export type StorePasswordsMutation = {
   storePasswords: Array<{ id: string; passwordName: string }>;
+};
+
+export type DeletePasswordsMutationVariables = Exact<{
+  passwords: Array<PasswordDeleteInput> | PasswordDeleteInput;
+}>;
+
+export type DeletePasswordsMutation = {
+  deletePasswords: Array<{
+    id: string;
+    passwordName: string;
+    encryptedPassword: string;
+  }>;
 };
 
 export type GetPasswordsQueryVariables = Exact<{ [key: string]: never }>;
@@ -75,6 +103,15 @@ export const StorePasswordsDocument = gql`
     storePasswords(passwords: $passwords) {
       id
       passwordName
+    }
+  }
+`;
+export const DeletePasswordsDocument = gql`
+  mutation DeletePasswords($passwords: [PasswordDeleteInput!]!) {
+    deletePasswords(passwords: $passwords) {
+      id
+      passwordName
+      encryptedPassword
     }
   }
 `;
@@ -103,6 +140,19 @@ export function getSdk<C>(requester: Requester<C>) {
         variables,
         options
       ) as Promise<StorePasswordsMutation>;
+    },
+    DeletePasswords(
+      variables: DeletePasswordsMutationVariables,
+      options?: C
+    ): Promise<DeletePasswordsMutation> {
+      return requester<
+        DeletePasswordsMutation,
+        DeletePasswordsMutationVariables
+      >(
+        DeletePasswordsDocument,
+        variables,
+        options
+      ) as Promise<DeletePasswordsMutation>;
     },
     GetPasswords(
       variables?: GetPasswordsQueryVariables,

@@ -1,6 +1,7 @@
 // src/lib/components/vault/types.vault.ts
 
 import type { StorePasswordsMutation } from "$lib/graphiq/generated.sdk";
+import type { DeletePasswordsMutation } from "$lib/graphiq/generated.sdk";
 
 // The type of passwords stored on the AddPasswordsSheet.
 type PasswordEntry = {
@@ -13,4 +14,6 @@ type Password = StorePasswordsMutation["storePasswords"][number] & {
   decryptedPassword: string;
 };
 
-export type { PasswordEntry, Password };
+type DeletedPassword = DeletePasswordsMutation["deletePasswords"][number];
+
+export type { PasswordEntry, Password, DeletedPassword };
