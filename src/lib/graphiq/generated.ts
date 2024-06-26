@@ -35,6 +35,11 @@ export type Password = {
   passwordName: Scalars['String']['output'];
 };
 
+export type PasswordCacheResponse = {
+  decryptedPassword: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+};
+
 export type PasswordDeleteInput = {
   id: Scalars['ID']['input'];
   passwordName: Scalars['String']['input'];
@@ -53,6 +58,12 @@ export type PasswordResponse = {
 
 export type Query = {
   getPasswords: Array<Password>;
+  getPasswordsFromCache: Array<PasswordCacheResponse>;
+};
+
+
+export type QueryGetPasswordsFromCacheArgs = {
+  passwordIds: Array<Scalars['ID']['input']>;
 };
 
 export type StorePasswordsMutationVariables = Exact<{
@@ -61,6 +72,13 @@ export type StorePasswordsMutationVariables = Exact<{
 
 
 export type StorePasswordsMutation = { storePasswords: Array<{ id: string, passwordName: string }> };
+
+export type DeletePasswordsMutationVariables = Exact<{
+  passwords: Array<PasswordDeleteInput> | PasswordDeleteInput;
+}>;
+
+
+export type DeletePasswordsMutation = { deletePasswords: Array<{ id: string, passwordName: string, encryptedPassword: string }> };
 
 export type GetPasswordsQueryVariables = Exact<{ [key: string]: never; }>;
 

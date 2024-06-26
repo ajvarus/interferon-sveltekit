@@ -12,8 +12,14 @@ type PasswordResponse {
   encryptedPassword: String!
 }
 
+type PasswordCacheResponse {
+  id: ID!
+  decryptedPassword: String!
+}
+
 type Query {
   getPasswords: [Password!]!
+  getPasswordsFromCache(passwordIds: [String!]!): [PasswordCacheResponse!]!
 }
 
 type Mutation {

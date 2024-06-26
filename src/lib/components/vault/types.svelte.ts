@@ -2,6 +2,7 @@
 
 import type { StorePasswordsMutation } from "$lib/graphiq/generated.sdk";
 import type { DeletePasswordsMutation } from "$lib/graphiq/generated.sdk";
+import type { GetPasswordsFromCacheQuery } from "$lib/graphiq/generated.sdk";
 
 // The type of passwords stored on the AddPasswordsSheet.
 type PasswordEntry = {
@@ -16,4 +17,7 @@ type Password = StorePasswordsMutation["storePasswords"][number] & {
 
 type DeletedPassword = DeletePasswordsMutation["deletePasswords"][number];
 
-export type { PasswordEntry, Password, DeletedPassword };
+type CachedPassword =
+  GetPasswordsFromCacheQuery["getPasswordsFromCache"][number];
+
+export type { PasswordEntry, Password, DeletedPassword, CachedPassword };

@@ -3,34 +3,67 @@
   import { Input } from "$lib/components/ui/input/index";
   import { Label } from "$lib/components/ui/label/index";
   import { Button } from "$lib/components/ui/button/index";
-  import { enhance } from "$app/forms";
 
-  type Password = {
-    id: string;
-    passwordName: string;
-    decryptedPassword: string;
-  };
+  import Lock from "lucide-svelte/icons/lock";
+  import LockOpen from "lucide-svelte/icons/lock-open";
+  import LoaderCircle from "lucide-svelte/icons/loader-circle";
+
+  import { enhance } from "$app/forms";
+  import type { ActionResult } from "@sveltejs/kit";
+
+  import type { Password, CachedPassword } from "./types.svelte";
+  import { toast } from "svelte-sonner";
+
+  type DecryptionState = "encrypted" | "decrypting" |"decrypted";
+  let isDecrypted: DecryptionState = $state("encrypted");
 
   let {
     password = $bindable(),
-    index,
   }: {
     password: Password;
-    index: number;
   } = $props();
+
 </script>
 
-<form method="POST" action="?/delete" id={`passwords[${index}]`} use:enhance>
+<form method="POST" action="?/passwordscache" id={`passwordscache[${password.id}]`} use:enhance={({ cancel }) => {
+  if (isDecrypted === "decrypted") {
+    isDecrypted = "encrypted";
+    cancel();
+    return;
+  }
+  isDecrypted = "decrypting";
+  return async ({ result, update }: { result: any; update: any }) => {
+    console.log("Hi from form 2");
+    const cachedPasswords = (await result.data?.cachedpasswords || []) as CachedPassword[];
+    const cachedPassword = cachedPasswords.find((cachedPassword) => cachedPassword.id === password.id);
+    if (cachedPassword) {
+      password.decryptedPassword = cachedPassword.decryptedPassword;
+      toast.success("Password decrypted.");
+    } else {
+      toast.error("Failed to decrypt password.");
+    }
+    isDecrypted = "decrypted";
+    await update({ reset: false });
+  };
+}}>
+  <input form={`passwordscache[${password.id}]`} type="hidden" name="id" value={password.id} />
+</form>
+<form
+  method="POST"
+  action="?/delete"
+  id={`passwords[${password.id}]`}
+  use:enhance
+>
   <div class="grid gap-2">
     <Input
       type="hidden"
-      form={`passwords[${index}]`}
+      form={`passwords[${password.id}]`}
       name="index"
       bind:value={password.id}
     ></Input>
     <Input
       type="text"
-      form={`passwords[${index}]`}
+      form={`passwords[${password.id}]`}
       name={`passwords[${password.id}].name`}
       placeholder="Password name"
       bind:value={password.passwordName}
@@ -43,24 +76,41 @@
           <Input
             id="username"
             type="text"
-            form={`passwords[${index}]`}
+            form={`passwords[${password.id}]`}
             name={`passwords[${password.id}].username`}
             value=""
           />
         </div>
-        <div class="flex flex-col space-y-1.5">
-          <Label for="password">Password</Label>
-          <Input
-            id="password"
-            type="text"
-            form={`passwords[${index}]`}
-            name={`passwords[${password.id}].password`}
-            value=""
-          />
+        <div class="relative">
+          <div class="flex flex-col space-y-1.5">
+            <Label for="password">Password</Label>
+            <Input
+              id="password"
+              type={isDecrypted === "decrypted" ? "text" : "password"}
+              form={`passwords[${password.id}]`}
+              name={`passwords[${password.id}].password`}
+              bind:value={password.decryptedPassword}
+            />
+          </div>
+          <Button
+            type="submit"
+            form={`passwordscache[${password.id}]`}
+            size="icon"
+            variant="ghost"
+            class="absolute right-0.5 top-0.5 transform translate-y-1/2 rounded-full "
+          >
+            {#if isDecrypted === "encrypted"}
+              <Lock class="w-4 h-4" />
+            {:else if isDecrypted === "decrypting"}
+              <LoaderCircle class="animate-spin w-4 h-4" />
+            {:else if isDecrypted === "decrypted"}
+              <LockOpen class="w-4 h-4"/>
+            {/if}
+          </Button>
         </div>
       </Card.Content>
       <Card.Footer>
-        <Button type="submit" form={`passwords[${index}]`} class="w-full"
+        <Button type="submit" form={`passwords[${password.id}]`} class="w-full"
           >Delete</Button
         >
       </Card.Footer>

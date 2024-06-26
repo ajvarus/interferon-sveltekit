@@ -17,13 +17,11 @@
     <Carousel.Content class="h-[650px]">
       {#each passwords as password, index (password.id)}
         <Carousel.Item class="basis-1/2">
-          <PasswordCardV2 bind:password={passwords[index]} {index} />
+          <PasswordCardV2 bind:password={passwords[index]} />
         </Carousel.Item>
       {/each}
     </Carousel.Content>
-
     <Carousel.Previous />
-
     <Carousel.Next />
   </Carousel.Root>
 </div>

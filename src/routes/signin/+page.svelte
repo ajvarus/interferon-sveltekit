@@ -13,7 +13,7 @@
       console.log(result.type, result.data);
       const response: AuthResponse = result.data;
       if (response.success) {
-        setTimeout(async () => await goto("/dashboard"), 3000);
+        setTimeout(async () => await goto("/dashboard"), 0);
       }
       $authResponse = response;
       await update({ reset: false });

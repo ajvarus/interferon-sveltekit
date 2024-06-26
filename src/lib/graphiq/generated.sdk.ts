@@ -48,6 +48,11 @@ export type Password = {
   passwordName: Scalars["String"]["output"];
 };
 
+export type PasswordCacheResponse = {
+  decryptedPassword: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+};
+
 export type PasswordDeleteInput = {
   id: Scalars["ID"]["input"];
   passwordName: Scalars["String"]["input"];
@@ -66,6 +71,11 @@ export type PasswordResponse = {
 
 export type Query = {
   getPasswords: Array<Password>;
+  getPasswordsFromCache: Array<PasswordCacheResponse>;
+};
+
+export type QueryGetPasswordsFromCacheArgs = {
+  passwordIds: Array<Scalars["String"]["input"]>;
 };
 
 export type StorePasswordsMutationVariables = Exact<{
@@ -98,6 +108,14 @@ export type GetPasswordsQuery = {
   }>;
 };
 
+export type GetPasswordsFromCacheQueryVariables = Exact<{
+  passwordIds: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
+}>;
+
+export type GetPasswordsFromCacheQuery = {
+  getPasswordsFromCache: Array<{ id: string; decryptedPassword: string }>;
+};
+
 export const StorePasswordsDocument = gql`
   mutation StorePasswords($passwords: [PasswordInput!]!) {
     storePasswords(passwords: $passwords) {
@@ -120,6 +138,14 @@ export const GetPasswordsDocument = gql`
     getPasswords {
       id
       passwordName
+      decryptedPassword
+    }
+  }
+`;
+export const GetPasswordsFromCacheDocument = gql`
+  query GetPasswordsFromCache($passwordIds: [String!]!) {
+    getPasswordsFromCache(passwordIds: $passwordIds) {
+      id
       decryptedPassword
     }
   }
@@ -163,6 +189,19 @@ export function getSdk<C>(requester: Requester<C>) {
         variables,
         options
       ) as Promise<GetPasswordsQuery>;
+    },
+    GetPasswordsFromCache(
+      variables: GetPasswordsFromCacheQueryVariables,
+      options?: C
+    ): Promise<GetPasswordsFromCacheQuery> {
+      return requester<
+        GetPasswordsFromCacheQuery,
+        GetPasswordsFromCacheQueryVariables
+      >(
+        GetPasswordsFromCacheDocument,
+        variables,
+        options
+      ) as Promise<GetPasswordsFromCacheQuery>;
     },
   };
 }

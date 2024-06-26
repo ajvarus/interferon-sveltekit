@@ -18,10 +18,8 @@
     const res: AuthResponse = await response.json();
     if (res.success) {
       isOpen = false;
-      toast.success("Logout successful.", {
-        description: "You are being redirected",
-      });
-      setTimeout(async () => await goto("/"), 1000);
+      toast.success("Logout successful.");
+      setTimeout(async () => await goto("/"), 0);
     } else {
       isOpen = false;
       toast.error("Logout failed.", {

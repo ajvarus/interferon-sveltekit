@@ -88,4 +88,29 @@ export const actions: Actions = {
       };
     }
   },
+  passwordscache: async ({ request, locals }) => {
+    console.log("Hi from passwordscache");
+    const client = gqlClient(String(locals.token));
+    const sdk = gqlSdk(client, "query");
+
+    const formData = await request.formData();
+    const id: string = formData.get("id")?.toString() || "";
+    const passwordIds: string[] = [id];
+    console.log(formData);
+
+    try {
+      const result = await sdk.GetPasswordsFromCache({
+        passwordIds: passwordIds,
+      });
+      console.log("All good: ", result);
+      return {
+        cachedpasswords: result.getPasswordsFromCache || [],
+      };
+    } catch (error) {
+      console.log("All bad: ", error);
+      return {
+        cachedpasswords: [],
+      };
+    }
+  },
 };
