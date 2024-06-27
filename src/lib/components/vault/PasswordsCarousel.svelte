@@ -3,11 +3,13 @@
 
   import PasswordCardV2 from "./PasswordCardV2.svelte";
 
-  type Password = {
-    id: string;
-    passwordName: string;
-    decryptedPassword: string;
-  };
+  import type { Password } from "./types.svelte";
+
+  // type Password = {
+  //   id: string;
+  //   passwordName: string;
+  //   decryptedPassword: string;
+  // };
 
   let { passwords = $bindable([]) }: { passwords: Password[] } = $props();
 </script>

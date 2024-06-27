@@ -4,11 +4,7 @@
   import { Label } from "$lib/components/ui/label/index";
   import { Button } from "$lib/components/ui/button/index";
 
-  type PasswordEntry = {
-    name: string;
-    username: string;
-    password: string;
-  };
+  import type { PasswordEntry } from "./types.svelte";
 
   let {
     password = $bindable({ name: "", username: "", password: "" }),

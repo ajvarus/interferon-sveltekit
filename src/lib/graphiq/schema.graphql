@@ -3,12 +3,14 @@
 type Password {
   id: ID!
   passwordName: String!
+  username: String!
   decryptedPassword: String!
 }
 
 type PasswordResponse {
   id: ID!
   passwordName: String!
+  username: String!
   encryptedPassword: String!
 }
 
@@ -23,12 +25,13 @@ type Query {
 }
 
 type Mutation {
-  storePasswords(passwords: [PasswordInput!]!): [Password!]!
+  storePasswords(passwords: [PasswordInput!]!): [PasswordResponse!]!
   deletePasswords(passwords: [PasswordDeleteInput!]!): [PasswordResponse!]!
 }
 
 input PasswordInput {
   passwordName: String!
+  username: String!
   password: String!
 }
 

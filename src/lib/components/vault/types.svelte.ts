@@ -1,5 +1,6 @@
 // src/lib/components/vault/types.vault.ts
 
+import type { GetPasswordsQuery } from "$lib/graphiq/generated.sdk";
 import type { StorePasswordsMutation } from "$lib/graphiq/generated.sdk";
 import type { DeletePasswordsMutation } from "$lib/graphiq/generated.sdk";
 import type { GetPasswordsFromCacheQuery } from "$lib/graphiq/generated.sdk";
@@ -11,9 +12,12 @@ type PasswordEntry = {
   password: string;
 };
 
-type Password = StorePasswordsMutation["storePasswords"][number] & {
+type Password = GetPasswordsQuery["getPasswords"][number] & {
   decryptedPassword: string;
 };
+// type Password = StorePasswordsMutation["storePasswords"][number] & {
+//   decryptedPassword: string;
+// };
 
 type DeletedPassword = DeletePasswordsMutation["deletePasswords"][number];
 

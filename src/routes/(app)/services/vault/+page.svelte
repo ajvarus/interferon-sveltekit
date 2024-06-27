@@ -17,7 +17,7 @@
   import { untrack } from "svelte";
 
   let { data, form }: { data: PageData; form: ActionData } = $props();
-  let passwords = $state(data?.passwords || []);
+  let passwords = $state((data?.passwords as Password[]) || []);
 
   let storePasswordsResponse = $derived(form?.passwords as Password[]);
   let deletePasswordsResponse = $derived(

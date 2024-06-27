@@ -31,7 +31,7 @@ export type Scalars = {
 
 export type Mutation = {
   deletePasswords: Array<PasswordResponse>;
-  storePasswords: Array<Password>;
+  storePasswords: Array<PasswordResponse>;
 };
 
 export type MutationDeletePasswordsArgs = {
@@ -46,6 +46,7 @@ export type Password = {
   decryptedPassword: Scalars["String"]["output"];
   id: Scalars["ID"]["output"];
   passwordName: Scalars["String"]["output"];
+  username: Scalars["String"]["output"];
 };
 
 export type PasswordCacheResponse = {
@@ -61,12 +62,14 @@ export type PasswordDeleteInput = {
 export type PasswordInput = {
   password: Scalars["String"]["input"];
   passwordName: Scalars["String"]["input"];
+  username: Scalars["String"]["input"];
 };
 
 export type PasswordResponse = {
   encryptedPassword: Scalars["String"]["output"];
   id: Scalars["ID"]["output"];
   passwordName: Scalars["String"]["output"];
+  username: Scalars["String"]["output"];
 };
 
 export type Query = {
@@ -83,7 +86,7 @@ export type StorePasswordsMutationVariables = Exact<{
 }>;
 
 export type StorePasswordsMutation = {
-  storePasswords: Array<{ id: string; passwordName: string }>;
+  storePasswords: Array<{ id: string; passwordName: string; username: string }>;
 };
 
 export type DeletePasswordsMutationVariables = Exact<{
@@ -101,11 +104,7 @@ export type DeletePasswordsMutation = {
 export type GetPasswordsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetPasswordsQuery = {
-  getPasswords: Array<{
-    id: string;
-    passwordName: string;
-    decryptedPassword: string;
-  }>;
+  getPasswords: Array<{ id: string; passwordName: string; username: string }>;
 };
 
 export type GetPasswordsFromCacheQueryVariables = Exact<{
@@ -121,6 +120,7 @@ export const StorePasswordsDocument = gql`
     storePasswords(passwords: $passwords) {
       id
       passwordName
+      username
     }
   }
 `;
@@ -138,7 +138,7 @@ export const GetPasswordsDocument = gql`
     getPasswords {
       id
       passwordName
-      decryptedPassword
+      username
     }
   }
 `;

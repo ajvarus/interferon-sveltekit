@@ -9,7 +9,6 @@
   import LoaderCircle from "lucide-svelte/icons/loader-circle";
 
   import { enhance } from "$app/forms";
-  import type { ActionResult } from "@sveltejs/kit";
 
   import type { Password, CachedPassword } from "./types.svelte";
   import { toast } from "svelte-sonner";
@@ -78,7 +77,7 @@
             type="text"
             form={`passwords[${password.id}]`}
             name={`passwords[${password.id}].username`}
-            value=""
+            bind:value={password.username}
           />
         </div>
         <div class="relative">
