@@ -88,6 +88,7 @@
               type={isDecrypted === "decrypted" ? "text" : "password"}
               form={`passwords[${password.id}]`}
               name={`passwords[${password.id}].password`}
+              placeholder="*******"
               bind:value={password.decryptedPassword}
             />
           </div>
