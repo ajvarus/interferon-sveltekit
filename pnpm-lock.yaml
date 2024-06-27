@@ -17,6 +17,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       embla-carousel-svelte:
         specifier: ^8.1.5
         version: 8.1.5(svelte@5.0.0-next.153)
