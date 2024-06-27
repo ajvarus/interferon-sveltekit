@@ -50,11 +50,12 @@
       <AddPasswordsSheet />
     </form>
   </div>
-  <div class="flex flex-col justify-center w-full max-w-sm pt-10">
+  <div class="w-full max-w-sm pt-10">
     {#if passwords && passwords.length === 0}
-      <p>
-        No passwords found. Start by adding passwords using the button above.
-      </p>
+      <div class="flex flex-col items-center">
+        <p>No passwords found.</p>
+        <p>Start by adding passwords using the button above.</p>
+      </div>
     {:else if passwords}
       <PasswordsCarousel {passwords} />
     {/if}
