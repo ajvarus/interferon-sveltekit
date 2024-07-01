@@ -10,7 +10,6 @@ import { makeAuthroizedRequestTo } from "$lib/intf/requests";
 import { deleteToken } from "$lib/redised/mutations";
 
 export const GET: RequestHandler = async ({ locals, cookies }) => {
-  console.log("Hi from logout server");
   let authResponse: AuthResponse = { success: false };
   const response = await makeAuthroizedRequestTo(
     `${INTF_AUTH_ENDPOINT}/signout`,

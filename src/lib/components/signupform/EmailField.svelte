@@ -4,27 +4,17 @@
 
   import Check from "lucide-svelte/icons/check";
 
-  import { Validator as v } from "./validator";
-  import { email, isValidEmail, emailExists } from "./stores";
+  import { signupFormController as sfc } from "./state.svelte";
 
-  let errorMsg = $state("");
-
-  let hasBlurred = $state(false);
+  let isBlurred = $state(false);
 
   async function onBlur() {
-    hasBlurred = true;
-    let result = v.validateEmail($email);
-    $isValidEmail = result.isValid;
-    errorMsg = result.isValid ? "" : String(result.error);
-    if ($isValidEmail) {
-      emailExists.set(await v.checkIfEmailExists($email));
+    isBlurred = true;
+    sfc.validateEmail();
+    if (sfc.isEmailValid) {
+      await sfc.checkIfEmailExists();
     }
   }
-
-  const onFocus = () => {
-    hasBlurred = false;
-    errorMsg = "";
-  };
 </script>
 
 <div class="flex max-w-sm w-full flex-col gap-3">
@@ -36,18 +26,20 @@
       id="email-2"
       placeholder="name@example.com"
       name="email"
-      bind:value={$email}
-      on:blur={onBlur}
-      on:focus={onFocus}
-      class={`border ${$email && hasBlurred && !$isValidEmail ? "border-red-500" : ""}`}
+      bind:value={sfc.email}
+      on:blur={async () => await onBlur()}
+      on:focus={() => isBlurred == false}
+      class={`border ${isBlurred && !sfc.isEmailValid ? "border-red-500" : ""}`}
     />
-    {#if $email && $isValidEmail && !$emailExists}
+    {#if sfc.isEmailValid && !sfc.emailExists}
       <Check
         class="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500 w-4 h-4"
       />
     {/if}
   </div>
-  {#if $email && !$isValidEmail && errorMsg}
-    <p class="text-sm text-red-500">{errorMsg}</p>
-  {/if}
+  <!-- {#if $email && !$isValidEmail && errorMsg} -->
+  <p class="text-sm text-red-500">
+    {isBlurred ? sfc.emailValidationError : ""}
+  </p>
+  <!-- {/if} -->
 </div>

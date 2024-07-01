@@ -1,13 +1,14 @@
 // src/lib/intf/requests.ts
 
-import { INTF_BASE_URL } from "$env/static/private";
+//import { INTF_BASE_URL } from "$env/static/private";
+import { PUBLIC_INTF_BASE_URL } from "$env/static/public";
 
 async function makeRequestTo(
   intfEndpoint: string,
   method: string,
   body: Object
 ): Promise<any> {
-  const response = await fetch(`${INTF_BASE_URL}${intfEndpoint}`, {
+  const response = await fetch(`${PUBLIC_INTF_BASE_URL}${intfEndpoint}`, {
     method: method,
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +24,7 @@ async function makeAuthroizedRequestTo(
   token: string,
   body?: Object
 ): Promise<Response> {
-  const response = fetch(`${INTF_BASE_URL}${intfEndpoint}`, {
+  const response = fetch(`${PUBLIC_INTF_BASE_URL}${intfEndpoint}`, {
     method: method,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -31,7 +32,6 @@ async function makeAuthroizedRequestTo(
     },
     body: JSON.stringify({ ...body }),
   });
-  console.log("Hi from intf request maker.");
   return response;
 }
 

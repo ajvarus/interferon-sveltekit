@@ -60,14 +60,12 @@ export const actions: Actions = {
       ? Number(formData.get("index"))
       : 0;
 
-    console.log(formData);
     for (let i = index; i == index; i++) {
       deletedPasswords.push({
         id: formData.get("index")?.toString() || "",
         passwordName: formData.get(`passwords[${i}].name`)?.toString() || "",
       });
     }
-    console.log("deletedPasswords", deletedPasswords);
     try {
       const result = await sdk.DeletePasswords({ passwords: deletedPasswords });
       return {
@@ -80,14 +78,12 @@ export const actions: Actions = {
     }
   },
   passwordscache: async ({ request, locals }) => {
-    console.log("Hi from passwordscache");
     const client = gqlClient(String(locals.token));
     const sdk = gqlSdk(client, "query");
 
     const formData = await request.formData();
     const id: string = formData.get("id")?.toString() || "";
     const passwordIds: string[] = [id];
-    console.log(formData);
 
     try {
       const result = await sdk.GetPasswordsFromCache({

@@ -6,7 +6,6 @@ export const signupSchema = z.object({
   email: z.string().email({ message: "Invalid email format." }),
   password: z
     .string()
-    //.min(8, { message: "Password must be at least 8 characters long" })
     .refine((password) => /[A-Z]/.test(password), {
       message: "Password must include at least one uppercase letter.",
     })

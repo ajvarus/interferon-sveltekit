@@ -6,48 +6,9 @@
   import EyeIcon from "lucide-svelte/icons/eye";
   import EyeOffIcon from "lucide-svelte/icons/eye-off";
 
-  import {
-    email,
-    password,
-    isValidEmail,
-    emailExists,
-    isPasswordValid,
-    isConfirmPasswordValid,
-  } from "./stores";
+  import { signupFormController as sfc } from "./state.svelte";
 
-  import { Validator as v } from "./validator";
-
-  let confirmPassword = $state("");
   let isPasswordVisible = $state(false);
-  let warningMsgPassword = $state("");
-  let errorMsgConfirmPassword = $state("");
-
-  function onPasswordInput() {
-    const validationResult = v.validatePassword($password);
-    $isPasswordValid = validationResult.isValid;
-    warningMsgPassword = validationResult.isValid
-      ? ""
-      : String(validationResult.error);
-    // if ($isPasswordValid) {
-    //   warningMsgPassword = "";
-    // } else {
-    //   warningMsgPassword = "Password is weak.";
-    // }
-  }
-
-  function onConfirmPasswordBlur() {
-    $isConfirmPasswordValid = v.matchPasswords($password, confirmPassword);
-    if ($isConfirmPasswordValid) {
-      errorMsgConfirmPassword = "";
-    } else {
-      errorMsgConfirmPassword = "Passwords don't match.";
-    }
-  }
-
-  function onEyeButtonClick() {
-    isPasswordVisible = !isPasswordVisible;
-    console.log(!$isPasswordValid);
-  }
 </script>
 
 <div class="flex flex-col max-w-sm w-full gap-2.5">
@@ -60,16 +21,16 @@
         name="password"
         type={isPasswordVisible ? "text" : "password"}
         placeholder="Abc@1234"
-        bind:value={$password}
-        on:input={onPasswordInput}
-        class={`border ${$password.length > 0 && !$isPasswordValid ? "border-red-500" : "border-gray-300"}`}
+        bind:value={sfc.password}
+        on:input={() => sfc.validatePassword()}
+        class={`border ${!sfc.emailExists && sfc.password.length > 0 && !sfc.isPasswordValid ? "border-red-500" : "border-gray-300"}`}
       />
       <Button
         variant="ghost"
         size="icon"
         class="absolute right-0.5 top-1/2 transform -translate-y-1/2 cursor-pointer"
-        on:click={onEyeButtonClick}
-        disabled={$password.length === 0}
+        on:click={() => (isPasswordVisible = !isPasswordVisible)}
+        disabled={sfc.password.length === 0}
       >
         {#if isPasswordVisible}
           <EyeOffIcon class="w-4 h-4" />
@@ -78,11 +39,13 @@
         {/if}
       </Button>
     </div>
-    {#if warningMsgPassword}
-      <p class="text-sm text-red-500">{warningMsgPassword}</p>
-    {/if}
+    <!-- {#if warningMsgPassword} -->
+    <p class="text-sm text-red-500">
+      {!sfc.emailExists ? sfc.passwordValidationError : ""}
+    </p>
+    <!-- {/if} -->
   </div>
-  {#if $email && $isValidEmail && !$emailExists}
+  {#if sfc.isEmailValid && !sfc.emailExists}
     <div class="grid gap-2.5">
       <Label for="confirm-password">Confirm password</Label>
       <Input
@@ -90,13 +53,15 @@
         name="confirmPassword"
         type="password"
         placeholder="Abc@1234"
-        bind:value={confirmPassword}
-        on:blur={onConfirmPasswordBlur}
+        bind:value={sfc.confirmPassword}
+        on:blur={() => sfc.matchPasswords()}
         class="border border-gray-300"
       />
     </div>
-    {#if errorMsgConfirmPassword}
-      <p class="text-sm text-red-500">{errorMsgConfirmPassword}</p>
-    {/if}
+    <!-- {#if errorMsgConfirmPassword} -->
+    <p class="text-sm text-red-500">
+      {sfc.confirmPasswordValidationError}
+    </p>
+    <!-- {/if} -->
   {/if}
 </div>

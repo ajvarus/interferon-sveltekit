@@ -2,20 +2,42 @@
   import type { SubmitFunction } from "@sveltejs/kit";
 
   import SignUpForm from "$lib/components/signupform/SignUpForm.svelte";
+  import { toast } from "svelte-sonner";
 
   import { goto } from "$app/navigation";
 
-  import { authResponse } from "$lib/components/signupform/stores";
+  import { signupFormController as sfc } from "$lib/components/signupform/state.svelte";
+  import { FormStates as FormState } from "$lib/components/signupform/types";
   import type { AuthResponse } from "$lib/types";
 
-  function submitForm(): SubmitFunction | any {
+  function submitForm({
+    cancel,
+  }: {
+    cancel: () => void;
+  }): SubmitFunction | any {
+    sfc.formState = FormState.LOADING;
+    if (!sfc.validateForm()) {
+      cancel();
+      sfc.formState = FormState.ERROR;
+      toast.error("Check all fields.", {
+        description: "Please make sure all fields are valid.",
+      });
+      sfc.resetFormState();
+    }
     return async ({ result, update }: { result: any; update: any }) => {
-      console.log(result.type, result.data);
       const response: AuthResponse = result.data;
       if (response.success) {
+        sfc.formState = FormState.SUCCESS;
+        if (!sfc.emailExists) toast.success("Sign-up successful");
         await goto("/dashboard");
+        sfc.resetFormState();
+      } else {
+        sfc.formState = FormState.ERROR;
+        toast.error("Sign-up failed.", {
+          description: "Please try again.",
+        });
+        sfc.resetFormState();
       }
-      $authResponse = response;
       await update({ reset: false });
     };
   }
