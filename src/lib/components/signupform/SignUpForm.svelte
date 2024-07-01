@@ -14,9 +14,7 @@
 <Card.Root class="mx-auto max-w-sm">
   <Card.Header>
     <Card.Title class="text-2xl">Sign-in</Card.Title>
-    <Card.Description
-      >We'll sign you up if you're new or log you in if you aren't.</Card.Description
-    >
+    <Card.Description>We'll sign you up if you're new.</Card.Description>
   </Card.Header>
   <Card.Content>
     <form
