@@ -89,7 +89,6 @@ export const actions: Actions = {
       const result = await sdk.GetPasswordsFromCache({
         passwordIds: passwordIds,
       });
-      console.log("All good: ", result);
       return {
         cachedpasswords: result.getPasswordsFromCache || [],
       };

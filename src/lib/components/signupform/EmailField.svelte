@@ -28,7 +28,7 @@
       name="email"
       bind:value={sfc.email}
       on:blur={async () => await onBlur()}
-      on:focus={() => isBlurred == false}
+      on:focus={() => (isBlurred = false)}
       class={`border ${isBlurred && !sfc.isEmailValid ? "border-red-500" : ""}`}
     />
     {#if sfc.isEmailValid && !sfc.emailExists}
@@ -37,9 +37,7 @@
       />
     {/if}
   </div>
-  <!-- {#if $email && !$isValidEmail && errorMsg} -->
   <p class="text-sm text-red-500">
     {isBlurred ? sfc.emailValidationError : ""}
   </p>
-  <!-- {/if} -->
 </div>

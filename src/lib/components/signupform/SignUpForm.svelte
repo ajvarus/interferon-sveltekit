@@ -26,6 +26,7 @@
       action="/signin"
       use:enhance={submitForm}
       class="flex flex-col items-center gap-3"
+      novalidate
     >
       <EmailField />
       <PasswordField />

@@ -39,13 +39,12 @@
         {/if}
       </Button>
     </div>
-    <!-- {#if warningMsgPassword} -->
+
     <p class="text-sm text-red-500">
       {!sfc.emailExists ? sfc.passwordValidationError : ""}
     </p>
-    <!-- {/if} -->
   </div>
-  {#if sfc.isEmailValid && !sfc.emailExists}
+  {#if !sfc.emailExists}
     <div class="grid gap-2.5">
       <Label for="confirm-password">Confirm password</Label>
       <Input
@@ -58,10 +57,8 @@
         class="border border-gray-300"
       />
     </div>
-    <!-- {#if errorMsgConfirmPassword} -->
     <p class="text-sm text-red-500">
       {sfc.confirmPasswordValidationError}
     </p>
-    <!-- {/if} -->
   {/if}
 </div>

@@ -9,7 +9,7 @@ class SignupFormController {
   // EmailField states
   email: string = $state("");
   isEmailValid: boolean = $state(false);
-  emailExists: boolean = $state(false);
+  emailExists: boolean = $state(true);
   emailValidationError: string = $state("");
 
   // PasswordField states

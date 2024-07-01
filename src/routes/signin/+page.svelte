@@ -16,10 +16,20 @@
     cancel: () => void;
   }): SubmitFunction | any {
     sfc.formState = FormState.LOADING;
-    if (!sfc.validateForm()) {
+    if (!sfc.emailExists && !sfc.validateForm()) {
       cancel();
       sfc.formState = FormState.ERROR;
       toast.error("Check all fields.", {
+        description: "Please make sure all fields are valid.",
+      });
+      sfc.resetFormState();
+    } else if (
+      sfc.emailExists &&
+      (!sfc.isEmailValid || sfc.password.length === 0)
+    ) {
+      cancel();
+      sfc.formState = FormState.ERROR;
+      toast.error("Invalid email or password.", {
         description: "Please make sure all fields are valid.",
       });
       sfc.resetFormState();
