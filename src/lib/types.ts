@@ -15,4 +15,5 @@ export interface AuthResponse {
   success: boolean;
   status_code?: number;
   msg?: string;
+  user_id?: string;
 }

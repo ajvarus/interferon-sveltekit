@@ -24,6 +24,9 @@ class SignupFormController {
   formState: FormState = $state(FormStates.NEUTRAL);
   isSubmittable: boolean = $state(false);
 
+  // Active session dialog states
+  activeSessionDialogOpen: boolean = $state(false);
+
   validateEmail(): void {
     const passwordSchema = signupSchema.pick({ email: true });
     const result = passwordSchema.safeParse({ email: this.email });
@@ -73,6 +76,14 @@ class SignupFormController {
     }, 2000);
     this.password = "";
     this.confirmPassword = "";
+  }
+
+  openActiveSessionDialog() {
+    this.activeSessionDialogOpen = true;
+  }
+
+  closeActiveSessionDialog() {
+    this.activeSessionDialogOpen = false;
   }
 }
 

@@ -10,7 +10,13 @@
   import { FormStates as FormState } from "./types";
 </script>
 
-<Button size="icon" class="rounded-full" type="submit" form="signupform">
+<Button
+  size="icon"
+  class="rounded-full"
+  type="submit"
+  form="signupform"
+  id="signupform-submit-button"
+>
   {#if sfc.formState === FormState.LOADING}
     <LoaderCircle class="animate-spin" />
   {:else if sfc.formState === FormState.ERROR}

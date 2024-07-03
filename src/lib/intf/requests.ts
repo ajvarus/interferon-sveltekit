@@ -7,7 +7,7 @@ async function makeRequestTo(
   intfEndpoint: string,
   method: string,
   body: Object
-): Promise<any> {
+): Promise<Response> {
   const response = await fetch(`${PUBLIC_INTF_BASE_URL}${intfEndpoint}`, {
     method: method,
     headers: {

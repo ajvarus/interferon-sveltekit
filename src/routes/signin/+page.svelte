@@ -2,6 +2,7 @@
   import type { SubmitFunction } from "@sveltejs/kit";
 
   import SignUpForm from "$lib/components/signupform/SignUpForm.svelte";
+  import ActiveSessionDialog from "$lib/components/signupform/ActiveSessionDialog.svelte";
   import { toast } from "svelte-sonner";
 
   import { goto } from "$app/navigation";
@@ -41,6 +42,8 @@
         if (!sfc.emailExists) toast.success("Sign-up successful");
         await goto("/dashboard");
         sfc.resetFormState();
+      } else if (response.status_code === 701) {
+        sfc.openActiveSessionDialog();
       } else {
         sfc.formState = FormState.ERROR;
         toast.error("Sign-up failed.", {
@@ -55,4 +58,5 @@
 
 <div class="flex flex-col justify-center items-center h-screen gap-2.5">
   <SignUpForm {submitForm} />
+  <ActiveSessionDialog />
 </div>

@@ -21,7 +21,7 @@
       name="signupform"
       id="signupform"
       method="POST"
-      action="/signin"
+      action="?/resolve"
       use:enhance={submitForm}
       class="flex flex-col items-center gap-3"
       novalidate
