@@ -1,9 +1,11 @@
 // src/hooks.server.ts
 
-import type { Handle } from "@sveltejs/kit";
+import type { Handle, HandleServerError } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
 
 import { getToken } from "$lib/redised/queries";
+
+import type { CombinedError } from "@urql/svelte";
 
 export const handle: Handle = async ({ event, resolve }) => {
   const path = event.url.pathname;
@@ -18,5 +20,28 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (!token) throw redirect(303, "/signin");
 
   event.locals.token = token;
+
   return await resolve(event);
+};
+
+export const handleError: HandleServerError = async ({
+  error,
+  event,
+  status,
+  message,
+}) => {
+  if (
+    error &&
+    typeof error === "object" &&
+    "name" in error &&
+    error.name === "CombinedError"
+  ) {
+    const combinedError = error as CombinedError;
+    if (combinedError.response?.status === 401) {
+      event.cookies.delete("session_id", { path: "/" });
+      event.cookies.set("session_terminated", "true", { path: "/" });
+      //event.locals.sessionTerminated = true;
+      redirect(303, "/signin?session-terminated");
+    }
+  }
 };

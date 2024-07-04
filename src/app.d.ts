@@ -4,9 +4,12 @@ declare global {
   namespace App {
     interface Locals {
       token?: string;
+      sessionTerminated?: boolean;
     }
     // interface Error {}
-    // interface PageData {}
+    interface PageData {
+      sessionTerminated?: boolean;
+    }
     // interface PageState {}
     // interface Platform {}
   }

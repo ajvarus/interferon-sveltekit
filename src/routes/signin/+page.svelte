@@ -5,6 +5,7 @@
   import ActiveSessionDialog from "$lib/components/signupform/ActiveSessionDialog.svelte";
   import { toast } from "svelte-sonner";
 
+  import { page } from "$app/stores";
   import { goto } from "$app/navigation";
 
   import { signupFormController as sfc } from "$lib/components/signupform/state.svelte";
@@ -54,6 +55,22 @@
       await update({ reset: false });
     };
   }
+
+  $effect(() => {
+    if ($page.url.search === "?session-terminated") {
+      goto("/signin");
+    }
+  });
+
+  $effect(() => {
+    if ($page.data.sessionTerminated === true) {
+      toast.info("You have been logged out.", {
+        description:
+          "You have been logged out because you are logged in somewhere else.",
+      });
+      $page.data.sessionTerminated = false;
+    }
+  });
 </script>
 
 <div class="flex flex-col justify-center items-center h-screen gap-2.5">

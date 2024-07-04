@@ -19,9 +19,7 @@ export const load: PageServerLoad = async ({ locals }) => {
       passwords: result.getPasswords || [],
     };
   } catch (error) {
-    return {
-      passwords: [],
-    };
+    throw error;
   }
 };
 

@@ -1,11 +1,19 @@
-import { INTF_BASE_URL, INTF_AUTH_ENDPOINT } from "$env/static/private";
+import { INTF_AUTH_ENDPOINT } from "$env/static/private";
 
-import type { Actions } from "./$types";
+import type { PageServerLoad, Actions } from "./$types";
 
 import type { AuthRequest, AuthResponse } from "$lib/types";
 import { makeRequestTo } from "$lib/intf/requests";
 
 import { setToken } from "$lib/redised/mutations";
+
+export const load: PageServerLoad = async ({ cookies }) => {
+  const sessionTerminated = cookies.get("session_terminated") === "true";
+  if (sessionTerminated) {
+    cookies.delete("session_terminated", { path: "/" });
+  }
+  return { sessionTerminated };
+};
 
 export const actions: Actions = {
   resolve: async ({ request, cookies }) => {
@@ -24,13 +32,6 @@ export const actions: Actions = {
         "POST",
         authRequest
       );
-      // const response = await fetch(`${INTF_BASE_URL}${INTF_AUTH_ENDPOINT}`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ ...authRequest }),
-      // });
 
       if (response.ok) {
         const session = await response.json();
