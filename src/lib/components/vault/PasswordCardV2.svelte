@@ -32,7 +32,6 @@
   }
   isDecrypted = "decrypting";
   return async ({ result, update }: { result: any; update: any }) => {
-    console.log("Hi from form 2");
     const cachedPasswords = (await result.data?.cachedpasswords || []) as CachedPassword[];
     const cachedPassword = cachedPasswords.find((cachedPassword) => cachedPassword.id === password.id);
     if (cachedPassword) {

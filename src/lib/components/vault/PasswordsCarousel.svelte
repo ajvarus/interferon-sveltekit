@@ -5,12 +5,6 @@
 
   import type { Password } from "./types.svelte";
 
-  // type Password = {
-  //   id: string;
-  //   passwordName: string;
-  //   decryptedPassword: string;
-  // };
-
   let { passwords = $bindable([]) }: { passwords: Password[] } = $props();
 </script>
 
