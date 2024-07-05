@@ -1,3 +1,5 @@
+<!-- src/lib/components/vault/PasswordCardV2.svelte -->
+
 <script lang="ts">
   import * as Card from "$lib/components/ui/card/index";
   import { Input } from "$lib/components/ui/input/index";
@@ -7,7 +9,8 @@
   import Lock from "lucide-svelte/icons/lock";
   import LockOpen from "lucide-svelte/icons/lock-open";
   import LoaderCircle from "lucide-svelte/icons/loader-circle";
-
+  import PasswordTimeoutCircle from "./PasswordTimeoutCircle.svelte";
+  
   import { enhance } from "$app/forms";
 
   import type { Password, CachedPassword } from "./types.svelte";
@@ -103,7 +106,8 @@
             {:else if isDecrypted === "decrypting"}
               <LoaderCircle class="animate-spin w-4 h-4" />
             {:else if isDecrypted === "decrypted"}
-              <LockOpen class="w-4 h-4"/>
+              <PasswordTimeoutCircle bind:isDecrypted={isDecrypted} />
+              <!-- <LockOpen class="w-4 h-4"/> -->
             {/if}
           </Button>
         </div>

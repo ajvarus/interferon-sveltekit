@@ -38,6 +38,9 @@ importers:
       mode-watcher:
         specifier: ^0.3.0
         version: 0.3.0(svelte@5.0.0-next.153)
+      svelte-progress-circles:
+        specifier: ^0.0.2
+        version: 0.0.2
       svelte-sonner:
         specifier: ^0.3.24
         version: 0.3.24(svelte@5.0.0-next.153)
@@ -2636,6 +2639,9 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  svelte-progress-circles@0.0.2:
+    resolution: {integrity: sha512-2djYCIchX4rhfuUPSrgQnSgbQ9O0W9NTQ4VUo3u7kaFYUkH8VJNHDMQ/hURywphDNOUFP8uhT+irqaDL60GQdw==}
 
   svelte-sonner@0.3.24:
     resolution: {integrity: sha512-txuL0JBUs0v6qGrr0PGCsbXmKHuthdrAkfISYi8umuveF7+gINb6EXl6VmKY9aHhyxCqvVgqd6yophQNrnor4w==}
@@ -5796,6 +5802,8 @@ snapshots:
       postcss: 8.4.38
       postcss-load-config: 4.0.2(postcss@8.4.38)
       typescript: 5.4.5
+
+  svelte-progress-circles@0.0.2: {}
 
   svelte-sonner@0.3.24(svelte@5.0.0-next.153):
     dependencies:
