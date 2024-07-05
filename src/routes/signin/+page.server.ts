@@ -9,9 +9,9 @@ import { setToken } from "$lib/redised/mutations";
 
 export const load: PageServerLoad = async ({ cookies }) => {
   const sessionTerminated = cookies.get("session_terminated") === "true";
-  if (sessionTerminated) {
-    cookies.delete("session_terminated", { path: "/" });
-  }
+  // if (sessionTerminated) {
+  //   cookies.delete("session_terminated", { path: "/" });
+  // }
   return { sessionTerminated };
 };
 

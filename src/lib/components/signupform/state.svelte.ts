@@ -27,6 +27,9 @@ class SignupFormController {
   // Active session dialog states
   activeSessionDialogOpen: boolean = $state(false);
 
+  // Cross client-server states
+  // sessionTerminated: boolean = $state(false);
+
   validateEmail(): void {
     const passwordSchema = signupSchema.pick({ email: true });
     const result = passwordSchema.safeParse({ email: this.email });

@@ -24,12 +24,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   return await resolve(event);
 };
 
-export const handleError: HandleServerError = async ({
-  error,
-  event,
-  status,
-  message,
-}) => {
+export const handleError: HandleServerError = async ({ error, event }) => {
   if (
     error &&
     typeof error === "object" &&
@@ -39,8 +34,6 @@ export const handleError: HandleServerError = async ({
     const combinedError = error as CombinedError;
     if (combinedError.response?.status === 401) {
       event.cookies.delete("session_id", { path: "/" });
-      event.cookies.set("session_terminated", "true", { path: "/" });
-      //event.locals.sessionTerminated = true;
       redirect(303, "/signin?session-terminated");
     }
   }

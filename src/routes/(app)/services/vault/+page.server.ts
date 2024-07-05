@@ -44,9 +44,10 @@ export const actions: Actions = {
         passwords: result.storePasswords || [],
       };
     } catch (error) {
-      return {
-        passwords: [],
-      };
+      throw error;
+      // return {
+      //   passwords: [],
+      // };
     }
   },
   delete: async ({ request, locals }) => {
@@ -70,9 +71,10 @@ export const actions: Actions = {
         deletedPasswords: result.deletePasswords || [],
       };
     } catch (error) {
-      return {
-        deletedPasswords: [],
-      };
+      throw error;
+      // return {
+      //   deletedPasswords: [],
+      // };
     }
   },
   passwordscache: async ({ request, locals }) => {
@@ -91,10 +93,10 @@ export const actions: Actions = {
         cachedpasswords: result.getPasswordsFromCache || [],
       };
     } catch (error) {
-      console.log("All bad: ", error);
-      return {
-        cachedpasswords: [],
-      };
+      throw error;
+      // return {
+      //   cachedpasswords: [],
+      // };
     }
   },
 };

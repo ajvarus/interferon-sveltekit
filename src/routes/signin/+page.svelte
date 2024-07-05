@@ -12,6 +12,8 @@
   import { FormStates as FormState } from "$lib/components/signupform/types";
   import type { AuthResponse } from "$lib/types";
 
+  let sessionTerminated = $derived($page.url.search === "?session-terminated");
+
   function submitForm({
     cancel,
   }: {
@@ -57,18 +59,13 @@
   }
 
   $effect(() => {
-    if ($page.url.search === "?session-terminated") {
-      goto("/signin");
-    }
-  });
-
-  $effect(() => {
-    if ($page.data.sessionTerminated === true) {
+    if (sessionTerminated === true) {
+      console.log("Redirect 2");
       toast.info("You have been logged out.", {
         description:
           "You have been logged out because you are logged in somewhere else.",
+        duration: 7000,
       });
-      $page.data.sessionTerminated = false;
     }
   });
 </script>
