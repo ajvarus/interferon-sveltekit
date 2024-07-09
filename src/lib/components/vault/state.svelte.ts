@@ -3,12 +3,14 @@
 import type {
   PasswordEntry,
   Password,
+  PasswordGroup,
 } from "$lib/components/vault/types.svelte";
 
 class AddPasswordsController {
   addedPasswords: PasswordEntry[] = $state([
     { name: "", username: "", password: "" },
   ]);
+  passwordGroups: PasswordGroup[] = $state([]);
   drawerOpen: boolean = $state(false);
 
   addPassword(): void {
@@ -33,6 +35,27 @@ class AddPasswordsController {
 
   closeDrawer(): void {
     this.drawerOpen = false;
+  }
+
+  toPasswordGroup(password: Password): PasswordGroup {
+    return {
+      passwordName: password.passwordName,
+      groupId: password.groupId,
+    };
+  }
+
+  groupPasswords(passwords: Password[]): PasswordGroup[] {
+    const groups = new Map<string, PasswordGroup>();
+
+    passwords.forEach((password) => {
+      const key = password.groupId;
+      if (!groups.has(key)) {
+        groups.set(key, this.toPasswordGroup(password));
+      }
+    });
+
+    this.passwordGroups = Array.from(groups.values());
+    return Array.from(groups.values());
   }
 }
 

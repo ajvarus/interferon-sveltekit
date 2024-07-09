@@ -15,13 +15,18 @@ type PasswordEntry = {
 type Password = GetPasswordsQuery["getPasswords"][number] & {
   decryptedPassword: string;
 };
-// type Password = StorePasswordsMutation["storePasswords"][number] & {
-//   decryptedPassword: string;
-// };
+
+type PasswordGroup = Pick<Password, "groupId" | "passwordName">;
 
 type DeletedPassword = DeletePasswordsMutation["deletePasswords"][number];
 
 type CachedPassword =
   GetPasswordsFromCacheQuery["getPasswordsFromCache"][number];
 
-export type { PasswordEntry, Password, DeletedPassword, CachedPassword };
+export type {
+  PasswordEntry,
+  Password,
+  PasswordGroup,
+  DeletedPassword,
+  CachedPassword,
+};

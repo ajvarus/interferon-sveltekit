@@ -19,6 +19,8 @@
   let { data, form }: { data: PageData; form: ActionData } = $props();
   let passwords = $state((data?.passwords as Password[]) || []);
 
+  //let _ = $derived(apc.groupPasswords(passwords));
+
   let storePasswordsResponse = $derived(form?.passwords as Password[]);
   let deletePasswordsResponse = $derived(
     form?.deletedPasswords as DeletedPassword[]
@@ -39,6 +41,9 @@
       });
       toast.success("Passwords deleted.");
     }
+  });
+  $effect(() => {
+    apc.groupPasswords(passwords);
   });
 </script>
 

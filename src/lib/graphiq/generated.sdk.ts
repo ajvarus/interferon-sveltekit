@@ -44,6 +44,7 @@ export type MutationStorePasswordsArgs = {
 
 export type Password = {
   decryptedPassword: Scalars["String"]["output"];
+  groupId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
   passwordName: Scalars["String"]["output"];
   username: Scalars["String"]["output"];
@@ -104,7 +105,12 @@ export type DeletePasswordsMutation = {
 export type GetPasswordsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetPasswordsQuery = {
-  getPasswords: Array<{ id: string; passwordName: string; username: string }>;
+  getPasswords: Array<{
+    id: string;
+    groupId: string;
+    passwordName: string;
+    username: string;
+  }>;
 };
 
 export type GetPasswordsFromCacheQueryVariables = Exact<{
@@ -137,6 +143,7 @@ export const GetPasswordsDocument = gql`
   query GetPasswords {
     getPasswords {
       id
+      groupId
       passwordName
       username
     }

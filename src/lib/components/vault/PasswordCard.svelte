@@ -1,8 +1,11 @@
+<!-- src/lib/components/vault/PasswordCard.svelte-->
+
 <script lang="ts">
   import * as Card from "$lib/components/ui/card/index";
   import { Input } from "$lib/components/ui/input/index";
   import { Label } from "$lib/components/ui/label/index";
   import { Button } from "$lib/components/ui/button/index";
+  import PasswordNameCombobox from "./PasswordNameCombobox.svelte";
 
   import type { PasswordEntry } from "./types.svelte";
 
@@ -18,12 +21,13 @@
 </script>
 
 <div class="grid gap-2">
+  <PasswordNameCombobox bind:passwordName={password.name} />
   <Input
-    type="text"
+    type="hidden"
     form="addpasswords"
     name={`passwords[${index}].name`}
     placeholder="Password name"
-    bind:value={password.name}
+    value={password.name}
     class="text-md border-dashed cursor-text">Password Name</Input
   >
   <Card.Root class="pt-4">

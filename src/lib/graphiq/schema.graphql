@@ -2,6 +2,7 @@
 
 type Password {
   id: ID!
+  groupId: ID!
   passwordName: String!
   username: String!
   decryptedPassword: String!
