@@ -63,7 +63,7 @@
       bind:value={password.id}
     ></Input>
     <Input
-      type="text"
+      type="hidden"
       form={`passwords[${password.id}]`}
       name={`passwords[${password.id}].name`}
       placeholder="Password name"

@@ -13,13 +13,14 @@
     Password,
     DeletedPassword,
   } from "$lib/components/vault/types.svelte";
-  import { addPasswordsController as apc } from "$lib/components/vault/state.svelte";
+  import {
+    addPasswordsController as apc,
+    passwordsController as pc,
+  } from "$lib/components/vault/state.svelte";
   import { untrack } from "svelte";
 
   let { data, form }: { data: PageData; form: ActionData } = $props();
   let passwords = $state((data?.passwords as Password[]) || []);
-
-  //let _ = $derived(apc.groupPasswords(passwords));
 
   let storePasswordsResponse = $derived(form?.passwords as Password[]);
   let deletePasswordsResponse = $derived(

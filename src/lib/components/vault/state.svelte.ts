@@ -4,6 +4,7 @@ import type {
   PasswordEntry,
   Password,
   PasswordGroup,
+  GroupedPasswords,
 } from "$lib/components/vault/types.svelte";
 
 class AddPasswordsController {
@@ -11,6 +12,7 @@ class AddPasswordsController {
     { name: "", username: "", password: "" },
   ]);
   passwordGroups: PasswordGroup[] = $state([]);
+  passwordGroupsMap: Map<string, PasswordGroup> = $state(new Map());
   drawerOpen: boolean = $state(false);
 
   addPassword(): void {
@@ -55,8 +57,26 @@ class AddPasswordsController {
     });
 
     this.passwordGroups = Array.from(groups.values());
+    this.passwordGroupsMap = groups;
     return Array.from(groups.values());
   }
 }
 
+class PasswordsController {
+  groupPasswords(passwords: Password[]): GroupedPasswords {
+    let groupedPasswords: GroupedPasswords = {};
+
+    groupedPasswords = passwords.reduce<GroupedPasswords>((acc, password) => {
+      const key = password.groupId;
+
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(password);
+
+      return acc;
+    }, {} as GroupedPasswords);
+    return groupedPasswords;
+  }
+}
+
 export const addPasswordsController = new AddPasswordsController();
+export const passwordsController = new PasswordsController();

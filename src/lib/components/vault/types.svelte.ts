@@ -16,7 +16,10 @@ type Password = GetPasswordsQuery["getPasswords"][number] & {
   decryptedPassword: string;
 };
 
+// Below type is used to type of list of unqiue password groups.
 type PasswordGroup = Pick<Password, "groupId" | "passwordName">;
+// Below type is used to group passwords by their groupId.
+type GroupedPasswords = Record<string, Password[]>;
 
 type DeletedPassword = DeletePasswordsMutation["deletePasswords"][number];
 
@@ -27,6 +30,7 @@ export type {
   PasswordEntry,
   Password,
   PasswordGroup,
+  GroupedPasswords,
   DeletedPassword,
   CachedPassword,
 };
