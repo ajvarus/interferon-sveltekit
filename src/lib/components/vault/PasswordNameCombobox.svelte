@@ -8,7 +8,10 @@
 
   import { addPasswordsController as apc } from "./state.svelte";
 
-  let { passwordName = $bindable("") }: { passwordName: string } = $props();
+  let {
+    passwordName = $bindable(""),
+    index,
+  }: { passwordName: string; index: number } = $props();
 
   let passwordNames = $derived(
     apc.passwordGroups.map((group) => ({
@@ -46,6 +49,7 @@
     <Combobox.Input
       placeholder="Password name"
       class="w-full h-10 pl-3 pr-10 text-sm border rounded-md"
+      disabled={index !== 0}
     />
     <Button
       size="icon"
@@ -55,6 +59,7 @@
         isComboxboxOpen = !isComboxboxOpen;
         showFullList = isComboxboxOpen;
       }}
+      disabled={index !== 0}
     >
       <CircleChevronDown />
     </Button>

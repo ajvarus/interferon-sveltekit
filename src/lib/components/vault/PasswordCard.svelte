@@ -21,14 +21,15 @@
 </script>
 
 <div class="grid gap-2">
-  <PasswordNameCombobox bind:passwordName={password.name} />
+  <PasswordNameCombobox bind:passwordName={password.name} {index} />
   <Input
     type="hidden"
     form="addpasswords"
     name={`passwords[${index}].name`}
     placeholder="Password name"
     value={password.name}
-    class="text-md border-dashed cursor-text">Password Name</Input
+    class="text-md border-dashed cursor-text"
+    disabled={index !== 0}>Password Name</Input
   >
   <p class="text-xs text-red-500">
     {password.errors?.name}
@@ -43,6 +44,7 @@
           form="addpasswords"
           name={`passwords[${index}].username`}
           bind:value={password.username}
+          disabled={index !== 0}
         />
         <p class="text-xs text-red-500">
           {password.errors?.username}
@@ -56,6 +58,7 @@
           form="addpasswords"
           name={`passwords[${index}].password`}
           bind:value={password.password}
+          disabled={index !== 0}
         />
         <p class="text-xs text-red-500">
           {password.errors?.password}

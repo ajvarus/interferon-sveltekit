@@ -86,12 +86,24 @@ class AddPasswordsController {
   isDuplicatePassword(index: number): boolean {
     const passwordEntry = this.addedPasswords[index];
     const key = passwordEntry.name.toLowerCase();
-    if (this.uniquePasswordsMap.has(key)) {
-      return this.uniquePasswordsMap
-        .get(key)!
-        .has(passwordEntry.username.toLowerCase());
+    const username = passwordEntry.username.toLowerCase();
+
+    // Checks if password being added is present in the main passwords list.
+    if (
+      this.uniquePasswordsMap.has(key) &&
+      this.uniquePasswordsMap.get(key)!.has(username)
+    ) {
+      return true;
     }
-    return false;
+
+    // Checks if password being added is present in the list of added passwords.
+    let isPresentOnList = this.addedPasswords.some(
+      (entry, i) =>
+        i !== index && // Skip the current password entry
+        entry.name.toLowerCase() === key &&
+        entry.username.toLowerCase() === username
+    );
+    return isPresentOnList;
   }
 
   validatePassword(index: number): boolean {
