@@ -68,6 +68,7 @@ export type PasswordInput = {
 
 export type PasswordResponse = {
   encryptedPassword: Scalars["String"]["output"];
+  groupId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
   passwordName: Scalars["String"]["output"];
   username: Scalars["String"]["output"];
@@ -87,7 +88,12 @@ export type StorePasswordsMutationVariables = Exact<{
 }>;
 
 export type StorePasswordsMutation = {
-  storePasswords: Array<{ id: string; passwordName: string; username: string }>;
+  storePasswords: Array<{
+    id: string;
+    groupId: string;
+    passwordName: string;
+    username: string;
+  }>;
 };
 
 export type DeletePasswordsMutationVariables = Exact<{
@@ -125,6 +131,7 @@ export const StorePasswordsDocument = gql`
   mutation StorePasswords($passwords: [PasswordInput!]!) {
     storePasswords(passwords: $passwords) {
       id
+      groupId
       passwordName
       username
     }

@@ -45,6 +45,7 @@
   });
   $effect(() => {
     apc.groupPasswords(passwords);
+    apc.mapUniquePasswords(passwords);
   });
 </script>
 
@@ -52,9 +53,7 @@
   class="flex flex-col justify-space-around items-center h-screen gap-2.5 mt-[65px] pt-5 ml-[65px] pl-5"
 >
   <div class="flex justify-center w-full max-w-sm">
-    <form method="POST" action="?/store" id="addpasswords" use:enhance>
-      <AddPasswordsSheet />
-    </form>
+    <AddPasswordsSheet />
   </div>
   <div class="w-full max-w-sm pt-10">
     {#if passwords && passwords.length === 0}

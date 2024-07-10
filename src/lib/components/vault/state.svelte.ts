@@ -2,10 +2,14 @@
 
 import type {
   PasswordEntry,
+  PasswordEntryErrors,
   Password,
   PasswordGroup,
   GroupedPasswords,
+  UniquePasswordsMap,
 } from "$lib/components/vault/types.svelte";
+
+import { passwordSchema } from "./schema";
 
 class AddPasswordsController {
   addedPasswords: PasswordEntry[] = $state([
@@ -13,6 +17,9 @@ class AddPasswordsController {
   ]);
   passwordGroups: PasswordGroup[] = $state([]);
   passwordGroupsMap: Map<string, PasswordGroup> = $state(new Map());
+
+  uniquePasswordsMap: UniquePasswordsMap = $state(new Map());
+
   drawerOpen: boolean = $state(false);
 
   addPassword(): void {
@@ -59,6 +66,50 @@ class AddPasswordsController {
     this.passwordGroups = Array.from(groups.values());
     this.passwordGroupsMap = groups;
     return Array.from(groups.values());
+  }
+
+  mapUniquePasswords(passwords: Password[]): UniquePasswordsMap {
+    const mapping: UniquePasswordsMap = new Map();
+
+    passwords.forEach((password) => {
+      const key = password.passwordName.toLowerCase();
+      if (!mapping.has(key)) {
+        mapping.set(key, new Set());
+      }
+      mapping.get(key)!.add(password.username.toLowerCase());
+    });
+
+    this.uniquePasswordsMap = mapping;
+    return mapping;
+  }
+
+  isDuplicatePassword(index: number): boolean {
+    const passwordEntry = this.addedPasswords[index];
+    const key = passwordEntry.name.toLowerCase();
+    if (this.uniquePasswordsMap.has(key)) {
+      return this.uniquePasswordsMap
+        .get(key)!
+        .has(passwordEntry.username.toLowerCase());
+    }
+    return false;
+  }
+
+  validatePassword(index: number): boolean {
+    const passwordEntry = this.addedPasswords[index];
+    const errors: PasswordEntryErrors = {};
+
+    const res = passwordSchema.safeParse(passwordEntry);
+    if (!res.success) {
+      res.error.issues.forEach((issue) => {
+        if (issue.path[0] in passwordEntry) {
+          errors[issue.path[0] as keyof PasswordEntryErrors] = issue.message;
+        }
+      });
+
+      this.addedPasswords[index].errors = errors;
+      return false;
+    }
+    return true;
   }
 }
 

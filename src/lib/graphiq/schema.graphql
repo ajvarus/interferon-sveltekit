@@ -10,6 +10,7 @@ type Password {
 
 type PasswordResponse {
   id: ID!
+  groupId: ID!
   passwordName: String!
   username: String!
   encryptedPassword: String!

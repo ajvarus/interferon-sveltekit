@@ -6,15 +6,27 @@ import type { DeletePasswordsMutation } from "$lib/graphiq/generated.sdk";
 import type { GetPasswordsFromCacheQuery } from "$lib/graphiq/generated.sdk";
 
 // The type of passwords stored on the AddPasswordsSheet.
+type PasswordEntryErrors = {
+  name?: string;
+  username?: string;
+  password?: string;
+};
+
 type PasswordEntry = {
   name: string;
   username: string;
   password: string;
+  errors?: PasswordEntryErrors;
 };
 
 type Password = GetPasswordsQuery["getPasswords"][number] & {
   decryptedPassword: string;
 };
+
+type UniquePasswordsMap = Map<
+  Password["passwordName"],
+  Set<Password["username"]>
+>;
 
 // Below type is used to type of list of unqiue password groups.
 type PasswordGroup = Pick<Password, "groupId" | "passwordName">;
@@ -28,9 +40,11 @@ type CachedPassword =
 
 export type {
   PasswordEntry,
+  PasswordEntryErrors,
   Password,
   PasswordGroup,
   GroupedPasswords,
+  UniquePasswordsMap,
   DeletedPassword,
   CachedPassword,
 };

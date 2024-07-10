@@ -30,6 +30,9 @@
     value={password.name}
     class="text-md border-dashed cursor-text">Password Name</Input
   >
+  <p class="text-xs text-red-500">
+    {password.errors?.name}
+  </p>
   <Card.Root class="pt-4">
     <Card.Content class="grid gap-4">
       <div class="flex flex-col space-y-1.5">
@@ -41,6 +44,9 @@
           name={`passwords[${index}].username`}
           bind:value={password.username}
         />
+        <p class="text-xs text-red-500">
+          {password.errors?.username}
+        </p>
       </div>
       <div class="flex flex-col space-y-1.5">
         <Label for="password">Password</Label>
@@ -51,6 +57,9 @@
           name={`passwords[${index}].password`}
           bind:value={password.password}
         />
+        <p class="text-xs text-red-500">
+          {password.errors?.password}
+        </p>
       </div>
     </Card.Content>
     <Card.Footer>
