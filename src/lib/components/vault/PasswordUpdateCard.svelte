@@ -8,7 +8,14 @@
   import PasswordNameCombobox from "./PasswordNameCombobox.svelte";
 
   import type { Password, PasswordEntry } from "./types.svelte";
+
   import { enhance } from "$app/forms";
+
+  import {
+    addPasswordsController as apc,
+    updatePasswordsController as upc,
+  } from "./state.svelte";
+  import { toast } from "svelte-sonner";
 
   let {
     password,
@@ -28,7 +35,33 @@
   action="?/update"
   method="POST"
   id={`updatepasswords[${id}]`}
-  use:enhance={() => {
+  use:enhance={({ cancel }) => {
+    let validationResult = upc.validatePassword(updatedPassword);
+
+    if (
+      upc.arePasswordEntriesEqual(updatedPassword, {
+        name: password.passwordName,
+        username: password.username,
+        password: password.decryptedPassword,
+      })
+    ) {
+      cancel();
+      toast.error("No changes made.");
+      return;
+    } else if (validationResult.valid === false) {
+      cancel();
+      updatedPassword.errors = validationResult.errors;
+      toast.error("Invalid password.");
+      return;
+    } else if (upc.isDuplicatePassword(updatedPassword, apc)) {
+      cancel();
+      toast.error("Duplicate password", {
+        description:
+          "A password with the same name and username already exists.",
+        duration: 7000,
+      });
+      return;
+    }
     return async ({ update }) => {
       await update({ reset: false });
     };
@@ -60,7 +93,7 @@
             type="text"
             form={`updatepasswords[${id}]`}
             name={`updatedPasswords[${id}].username`}
-            value={updatedPassword.username}
+            bind:value={updatedPassword.username}
           />
           <p class="text-xs text-red-500">
             {updatedPassword.errors?.username}
@@ -73,7 +106,7 @@
             type="text"
             form={`updatepasswords[${id}]`}
             name={`updatedPasswords[${id}].password`}
-            value={updatedPassword.password}
+            bind:value={updatedPassword.password}
           />
           <p class="text-xs text-red-500">
             {updatedPassword.errors?.password}

@@ -72,8 +72,6 @@ export const actions: Actions = {
       });
     }
 
-    console.log("Formdata", updatedPasswords);
-
     try {
       const result = await sdk.UpdatePasswords({ passwords: updatedPasswords });
       return {

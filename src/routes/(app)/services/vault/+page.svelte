@@ -5,7 +5,6 @@
 
   import AddPasswordsSheet from "$lib/components/vault/AddPasswordsSheet.svelte";
   import PasswordsCarousel from "$lib/components/vault/PasswordsCarousel.svelte";
-  import { enhance } from "$app/forms";
 
   import { toast } from "svelte-sonner";
 
@@ -15,7 +14,7 @@
   } from "$lib/components/vault/types.svelte";
   import {
     addPasswordsController as apc,
-    passwordsController as pc,
+    updatePasswordsController as upc,
   } from "$lib/components/vault/state.svelte";
   import { untrack } from "svelte";
 
@@ -52,6 +51,7 @@
           return p;
         });
       });
+      upc.closeDrawer();
       toast.success("Password updated.");
     }
 

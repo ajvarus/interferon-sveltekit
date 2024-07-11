@@ -155,6 +155,51 @@ class UpdatePasswordsController {
   closeDrawer(): void {
     this.drawerOpen = false;
   }
+
+  validatePassword(newPassword: PasswordEntry): {
+    valid: boolean;
+    errors: PasswordEntryErrors;
+  } {
+    const errors: PasswordEntryErrors = {};
+
+    const res = passwordSchema.safeParse(newPassword);
+    if (!res.success) {
+      res.error.issues.forEach((issue) => {
+        if (issue.path[0] in newPassword) {
+          errors[issue.path[0] as keyof PasswordEntryErrors] = issue.message;
+        }
+      });
+    }
+    return { valid: res.success, errors: errors };
+  }
+
+  arePasswordEntriesEqual(
+    newPassword: PasswordEntry,
+    oldPassword: PasswordEntry
+  ): boolean {
+    return Object.keys(newPassword).every(
+      (key) =>
+        newPassword[key as keyof PasswordEntry] ===
+        oldPassword[key as keyof PasswordEntry]
+    );
+  }
+
+  isDuplicatePassword(
+    newPassword: PasswordEntry,
+    apc: AddPasswordsController
+  ): boolean {
+    const key = newPassword.name.toLowerCase();
+    const username = newPassword.username.toLowerCase();
+
+    // Checks if password being added is present in the main passwords list.
+    if (
+      apc.uniquePasswordsMap.has(key) &&
+      apc.uniquePasswordsMap.get(key)!.has(username)
+    ) {
+      return true;
+    }
+    return false;
+  }
 }
 
 export const addPasswordsController = new AddPasswordsController();
