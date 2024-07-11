@@ -7,6 +7,7 @@ import { gqlSdk } from "$lib/graphiq/sdk";
 
 import type {
   PasswordInput,
+  PasswordUpdateInput,
   PasswordDeleteInput,
 } from "$lib/graphiq/generated.sdk";
 
@@ -48,6 +49,38 @@ export const actions: Actions = {
       // return {
       //   passwords: [],
       // };
+    }
+  },
+  update: async ({ request, locals }) => {
+    const client = gqlClient(String(locals.token));
+    const sdk = gqlSdk(client, "mutation");
+
+    let updatedPasswords: PasswordUpdateInput[] = [];
+
+    const formData = await request.formData();
+    const id: number = formData.get("id") ? Number(formData.get("id")) : 0;
+
+    for (let i = id; i == id; i++) {
+      updatedPasswords.push({
+        id: id.toString(),
+        passwordName:
+          formData.get(`updatedPasswords[${i}].name`)?.toString() || "",
+        username:
+          formData.get(`updatedPasswords[${i}].username`)?.toString() || "",
+        password:
+          formData.get(`updatedPasswords[${i}].password`)?.toString() || "",
+      });
+    }
+
+    console.log("Formdata", updatedPasswords);
+
+    try {
+      const result = await sdk.UpdatePasswords({ passwords: updatedPasswords });
+      return {
+        updatedPasswords: result.updatePasswords || [],
+      };
+    } catch (error) {
+      throw error;
     }
   },
   delete: async ({ request, locals }) => {

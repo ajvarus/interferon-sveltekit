@@ -10,6 +10,8 @@
   import LockOpen from "lucide-svelte/icons/lock-open";
   import LoaderCircle from "lucide-svelte/icons/loader-circle";
   import PasswordTimeoutCircle from "./PasswordTimeoutCircle.svelte";
+
+  import UpdatePasswordDrawer from "./UpdatePasswordDrawer.svelte";
   
   import { enhance } from "$app/forms";
 
@@ -27,6 +29,7 @@
 
 </script>
 
+<!-- Below form is used to fetch passwords from cache. -->
 <form method="POST" action="?/passwordscache" id={`passwordscache[${password.id}]`} use:enhance={({ cancel }) => {
   if (isDecrypted === "decrypted") {
     isDecrypted = "encrypted";
@@ -49,11 +52,17 @@
 }}>
   <input form={`passwordscache[${password.id}]`} type="hidden" name="id" value={password.id} />
 </form>
+
+<!-- Below form is used to delete passwords. -->
 <form
   method="POST"
   action="?/delete"
   id={`passwords[${password.id}]`}
-  use:enhance
+  use:enhance={() => {
+    return async ({ update }) => {
+      await update({ reset: false });
+    }
+  }}
 >
   <div class="grid gap-2">
     <Input
@@ -112,10 +121,11 @@
           </Button>
         </div>
       </Card.Content>
-      <Card.Footer>
+      <Card.Footer class="gap-2">
         <Button type="submit" form={`passwords[${password.id}]`} class="w-full"
           >Delete</Button
         >
+        <UpdatePasswordDrawer {password} isUnlocked={isDecrypted === "decrypted"} />
       </Card.Footer>
     </Card.Root>
   </div>

@@ -32,6 +32,7 @@ export type Scalars = {
 export type Mutation = {
   deletePasswords: Array<PasswordResponse>;
   storePasswords: Array<PasswordResponse>;
+  updatePasswords: Array<PasswordResponse>;
 };
 
 export type MutationDeletePasswordsArgs = {
@@ -40,6 +41,10 @@ export type MutationDeletePasswordsArgs = {
 
 export type MutationStorePasswordsArgs = {
   passwords: Array<PasswordInput>;
+};
+
+export type MutationUpdatePasswordsArgs = {
+  passwords: Array<PasswordUpdateInput>;
 };
 
 export type Password = {
@@ -74,6 +79,13 @@ export type PasswordResponse = {
   username: Scalars["String"]["output"];
 };
 
+export type PasswordUpdateInput = {
+  id: Scalars["ID"]["input"];
+  password: Scalars["String"]["input"];
+  passwordName: Scalars["String"]["input"];
+  username: Scalars["String"]["input"];
+};
+
 export type Query = {
   getPasswords: Array<Password>;
   getPasswordsFromCache: Array<PasswordCacheResponse>;
@@ -89,6 +101,19 @@ export type StorePasswordsMutationVariables = Exact<{
 
 export type StorePasswordsMutation = {
   storePasswords: Array<{
+    id: string;
+    groupId: string;
+    passwordName: string;
+    username: string;
+  }>;
+};
+
+export type UpdatePasswordsMutationVariables = Exact<{
+  passwords: Array<PasswordUpdateInput> | PasswordUpdateInput;
+}>;
+
+export type UpdatePasswordsMutation = {
+  updatePasswords: Array<{
     id: string;
     groupId: string;
     passwordName: string;
@@ -130,6 +155,16 @@ export type GetPasswordsFromCacheQuery = {
 export const StorePasswordsDocument = gql`
   mutation StorePasswords($passwords: [PasswordInput!]!) {
     storePasswords(passwords: $passwords) {
+      id
+      groupId
+      passwordName
+      username
+    }
+  }
+`;
+export const UpdatePasswordsDocument = gql`
+  mutation UpdatePasswords($passwords: [PasswordUpdateInput!]!) {
+    updatePasswords(passwords: $passwords) {
       id
       groupId
       passwordName
@@ -180,6 +215,19 @@ export function getSdk<C>(requester: Requester<C>) {
         variables,
         options
       ) as Promise<StorePasswordsMutation>;
+    },
+    UpdatePasswords(
+      variables: UpdatePasswordsMutationVariables,
+      options?: C
+    ): Promise<UpdatePasswordsMutation> {
+      return requester<
+        UpdatePasswordsMutation,
+        UpdatePasswordsMutationVariables
+      >(
+        UpdatePasswordsDocument,
+        variables,
+        options
+      ) as Promise<UpdatePasswordsMutation>;
     },
     DeletePasswords(
       variables: DeletePasswordsMutationVariables,

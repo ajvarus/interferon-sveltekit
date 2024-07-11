@@ -141,5 +141,22 @@ class PasswordsController {
   }
 }
 
+class UpdatePasswordsController {
+  drawerOpen: boolean = $state(false);
+
+  toggleDrawer(): void {
+    this.drawerOpen = !this.drawerOpen;
+  }
+
+  openDrawer(): void {
+    this.drawerOpen = true;
+  }
+
+  closeDrawer(): void {
+    this.drawerOpen = false;
+  }
+}
+
 export const addPasswordsController = new AddPasswordsController();
 export const passwordsController = new PasswordsController();
+export const updatePasswordsController = new UpdatePasswordsController();

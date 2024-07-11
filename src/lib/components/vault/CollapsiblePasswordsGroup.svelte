@@ -15,12 +15,7 @@
   let stayOpen = $state(false);
 </script>
 
-<Collapsible.Root
-  open={stayOpen || isOpen}
-  class="w-full space-y-2"
-  onmouseenter={() => (isOpen = true)}
-  onmouseleave={() => (isOpen = false)}
->
+<Collapsible.Root class="w-full space-y-2">
   <div
     class="border border-gray-200 rounded-full overflow-hidden mb-2 transition-colors duration-200 ease-in-out"
     class:bg-gray-100={isOpen}
@@ -39,14 +34,6 @@
             variant="ghost"
             size="icon"
             class="w-9 h-9 p-0 rounded-full"
-            on:click={() => {
-              if (isOpen) {
-                isOpen = false;
-                stayOpen = false;
-              } else {
-                stayOpen = !stayOpen;
-              }
-            }}
           >
             <CircleChevronDown class="h-6 w-6" />
           </Button>

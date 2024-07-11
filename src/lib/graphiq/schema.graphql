@@ -28,10 +28,18 @@ type Query {
 
 type Mutation {
   storePasswords(passwords: [PasswordInput!]!): [PasswordResponse!]!
+  updatePasswords(passwords: [PasswordUpdateInput!]!): [PasswordResponse!]!
   deletePasswords(passwords: [PasswordDeleteInput!]!): [PasswordResponse!]!
 }
 
 input PasswordInput {
+  passwordName: String!
+  username: String!
+  password: String!
+}
+
+input PasswordUpdateInput {
+  id: ID!
   passwordName: String!
   username: String!
   password: String!

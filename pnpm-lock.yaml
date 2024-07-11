@@ -50,6 +50,9 @@ importers:
       tailwind-variants:
         specifier: ^0.2.1
         version: 0.2.1(tailwindcss@3.4.4)
+      vaul-svelte:
+        specifier: ^0.3.2
+        version: 0.3.2(svelte@5.0.0-next.153)
     devDependencies:
       '@graphql-codegen/cli':
         specifier: ^5.0.2
@@ -2806,6 +2809,11 @@ packages:
   value-or-promise@1.0.12:
     resolution: {integrity: sha512-Z6Uz+TYwEqE7ZN50gwn+1LCVo9ZVrpxRPOhOLnncYkY1ZzOYtrX8Fwf/rFktZ8R5mJms6EZf5TqNOMeZmnPq9Q==}
     engines: {node: '>=12'}
+
+  vaul-svelte@0.3.2:
+    resolution: {integrity: sha512-X4OGWttSTVUl417qGDsSFgOvIx24DoiMRY/jaP9z0v9FL8LQQJ0RQ1ZM0QpdyQPRlNd24ewjNQHh5EgYDtfNpw==}
+    peerDependencies:
+      svelte: ^4.0.0 || ^5.0.0-next.1
 
   vite@5.2.13:
     resolution: {integrity: sha512-SSq1noJfY9pR3I1TUENL3rQYDQCFqgD+lM6fTRAM8Nv6Lsg5hDLaXkjETVeBt+7vZBCMoibD+6IWnT2mJ+Zb/A==}
@@ -5993,6 +6001,11 @@ snapshots:
     optional: true
 
   value-or-promise@1.0.12: {}
+
+  vaul-svelte@0.3.2(svelte@5.0.0-next.153):
+    dependencies:
+      bits-ui: 0.21.10(svelte@5.0.0-next.153)
+      svelte: 5.0.0-next.153
 
   vite@5.2.13(@types/node@20.14.7):
     dependencies:

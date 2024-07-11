@@ -23,9 +23,12 @@
   let passwords = $state((data?.passwords as Password[]) || []);
 
   let storePasswordsResponse = $derived(form?.passwords as Password[]);
+  let updatePasswordsResponse = $derived(form?.updatedPasswords as Password[]);
   let deletePasswordsResponse = $derived(
     form?.deletedPasswords as DeletedPassword[]
   );
+
+  // Below effects are used to sync passwords state with server responses.
   $effect(() => {
     if (storePasswordsResponse) {
       untrack(() => {
@@ -35,6 +38,23 @@
       apc.closeDrawer();
       apc.resetPasswords();
     }
+
+    if (updatePasswordsResponse) {
+      untrack(() => {
+        const updatedPasswordMap = new Map(
+          updatePasswordsResponse.map((p) => [p.id, p])
+        );
+
+        passwords = passwords.map((p) => {
+          if (updatedPasswordMap.has(p.id)) {
+            return updatedPasswordMap.get(p.id) as Password;
+          }
+          return p;
+        });
+      });
+      toast.success("Password updated.");
+    }
+
     if (deletePasswordsResponse) {
       untrack(() => {
         const idsToDelete = new Set(deletePasswordsResponse.map((p) => p.id));
@@ -43,6 +63,8 @@
       toast.success("Passwords deleted.");
     }
   });
+
+  // Below effects are used to derive states from passwords.
   $effect(() => {
     apc.groupPasswords(passwords);
     apc.mapUniquePasswords(passwords);
