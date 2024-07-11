@@ -22,23 +22,12 @@
   } = $props();
 </script>
 
-<Drawer.Root
-  open={upc.drawerOpen}
-  onOpenChange={() => upc.toggleDrawer()}
-  closeOnOutsideClick={true}
->
-  <Button
-    size="icon"
-    variant="outline"
-    on:click={() => {
-      if (isUnlocked) upc.openDrawer();
-      else
-        toast.error("Password locked", {
-          description: "Please unlock to edit.",
-          duration: 5000,
-        });
-    }}><Pencil class="w-4 h-4" /></Button
-  >
+<Drawer.Root>
+  <Drawer.Trigger asChild let:builder>
+    <Button builders={[builder]} size="icon" variant="outline"
+      ><Pencil class="w-4 h-4" /></Button
+    >
+  </Drawer.Trigger>
   <Drawer.Content>
     <div class="mx-auto w-full max-w-sm">
       <Drawer.Header>
@@ -46,9 +35,9 @@
       </Drawer.Header>
       <PasswordUpdateCard {password} />
       <Drawer.Footer>
-        <Button variant="outline" on:click={() => upc.closeDrawer()}
-          >Cancel</Button
-        >
+        <Drawer.Close asChild let:builder>
+          <Button builders={[builder]} variant="outline">Cancel</Button>
+        </Drawer.Close>
       </Drawer.Footer>
     </div>
   </Drawer.Content>
